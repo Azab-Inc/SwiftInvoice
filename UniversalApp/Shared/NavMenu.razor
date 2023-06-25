@@ -1,28 +1,13 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        
-        <a class="navbar-brand" href="/">SwiftInvoice</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">            
-            <a href="">Home</a>
-            <a href="/showall">All invoices</a>
-        </div>
-    </nav>
-</div>
+﻿<nav class="flex flex-col bg-red-500 sm:h-[100vh] p-3">
+    <a class="mb-5" href="/">SwiftInvoice</a>
+    <a href="/showall">All Invoices</a>
+    <a href="/support">Support</a>
+    <button class="mt-auto" @onclick="closeApp">Quit</button>
+</nav>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    void closeApp()
     {
-        collapseNavMenu = !collapseNavMenu;
+        System.Environment.Exit(0);
     }
 }
