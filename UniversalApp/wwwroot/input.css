@@ -1,0 +1,13 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {    
+    nav a {
+        @apply hover:bg-slate-700 hover:text-white text-white px-3 py-1;
+    }
+
+    button {
+        @apply border-2 border-red-500;
+    }
+}
