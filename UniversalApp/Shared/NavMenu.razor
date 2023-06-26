@@ -1,13 +1,35 @@
-﻿<nav class="flex flex-col bg-red-500 sm:h-[100vh] p-3">
-    <a class="mb-5" href="/">SwiftInvoice</a>
+﻿<nav class="flex flex-col bg-[#3775f8] hidden sm:flex sm:h-[100vh]">
+    <a class="mb-5 mt-3 text-3xl font-bold hover:bg-[#3775f8]" href="/">SwiftInvoice</a>
+    <a href="/user">Manage Profile</a>
     <a href="/showall">All Invoices</a>
     <a href="/support">Support</a>
-    <button class="mt-auto" @onclick="closeApp">Quit</button>
+    <button class="btn-danger mt-auto py-3 font-bold text-white" @onclick="closeApp">Quit</button>
 </nav>
+<nav class="bg-[#3775f8] flex items-center justify-between sm:hidden px-3 py-1 fixed top-0 right-0 left-0">
+    <a class="text-3xl font-bold hover:bg-[#3775f8]" href="/">SwiftInvoice</a>
+    <button class="fa-solid fa-bars fa-2xl" style="color: #ffffff;" @onclick="toggleMenu"></button>
+</nav>
+<div id="mobile-nav" class="w-full fixed inset-y-0 bg-[#3775f8] transform transition-transform ease-in-out duration-900 sm:hidden" hidden="@menuHidden">
+    <button class="fa-solid fa-bars fa-2xl fixed right-4 top-7" style="color: #ffffff;" @onclick="toggleMenu"></button>
+
+    <div class="flex flex-col justify-center items-center text-5xl font-bold gap-3 text-white h-full">
+        <a @onclick="toggleMenu" href="/user">Manage Profile</a>
+        <a @onclick="toggleMenu" href="/showall">All Invoices</a>
+        <a @onclick="toggleMenu" href="/support">Support</a>
+        <a class="hover:text-red-500" @onclick="closeApp">Quit</a>
+    </div>
+</div>
 
 @code {
+    bool menuHidden = true;
+
     void closeApp()
     {
         System.Environment.Exit(0);
+    }
+
+    void toggleMenu()
+    {
+        menuHidden = !menuHidden;
     }
 }
