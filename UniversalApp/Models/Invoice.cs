@@ -14,7 +14,7 @@ namespace UniversalApp.Models
 
         public int BusinessNumber { get; set; }
 
-        public string WebsiteLink { get; set; }
+        public string Website { get; set; }
 
         public DateTime Date { get; set; }
 

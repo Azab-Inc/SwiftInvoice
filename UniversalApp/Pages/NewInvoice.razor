@@ -1,9 +1,19 @@
 ﻿@page "/newinvoice"
+@using UniversalApp.Models
 
-<h3>New Invoice</h3>
+<h1 class="page-heading">New Invoice</h1>
 
-<a href="/showall"><button>Back</button></a>
+<form class="new-invoice my-3 flex flex-col gap-3 w-2/5">
+    <label>
+        <span>Client name:</span>
+        <input name="client-name" type="text" />
+    </label>
+    
+    
+</form>
+
+<a href="/showall"><button class="btn-warn">Back</button></a>
 
 @code {
-
+    private Invoice newInvoice = new Invoice();
 }

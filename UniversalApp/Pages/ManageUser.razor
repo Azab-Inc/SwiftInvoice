@@ -1,0 +1,101 @@
+﻿@page "/user"
+@using System.Text.Json;
+@using System.Reflection;
+@using UniversalApp.Models
+
+<h1 class="page-heading">Manage User</h1>
+
+<form class="flex sm:flex-row flex-col">
+    <div class="flex flex-col gap-3">
+        <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Required</span>
+        <label class="flex flex-col">
+            <span>Name:</span>
+            <div class="flex flex-row gap-3">
+                <input class="w-2/5" @bind="currentUser.FirstName" placeholder="First name" name="fname" type="text" />
+                <input class="w-2/5" @bind="currentUser.LastName" placeholder="Last name" name="lname" type="text" />
+            </div>
+        </label>
+        <label>
+            <span>Business Number:</span>
+            <input @bind="currentUser.BusinessNumber" name="business-num" type="number" />
+        </label>
+        <label>
+            <span>Email:</span>
+            <input @bind="currentUser.Email" name="email" type="email" />
+        </label>
+        <label>
+            <span>Logo:</span>
+            <input @bind="currentUser.Logo" name="logo" type="file" />
+        </label>
+        <label>
+            <span>Bank Acc Number</span>
+            <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="number" />
+        </label>
+        <label>
+            <span>Bank Name</span>
+            <input @bind="currentUser.BankName" name="bankName" type="text" />
+        </label>
+    </div>
+    <div class="flex flex-col gap-3">
+        <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Optional</span>
+        <label>
+            <span>Phone</span>
+            <input @bind="currentUser.Phone" name="phone" type="number" />
+        </label>
+        <label>
+            <span>Website</span>
+            <input @bind="currentUser.Website" name="website" type="website" />
+        </label>
+    </div>
+</form>
+<button class="btn-warn text-xl p-2 mt-3" @onclick="SaveUser">Save changes</button>
+
+@code {
+    public User currentUser = new User();
+    private string filePath;
+
+    protected override void OnInitialized()
+    {
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        filePath = Path.Combine(baseDirectory, "SwiftInvoiceData", "User", "user.json");
+
+        if (File.Exists(filePath))
+        {
+            string jsonData = File.ReadAllText(filePath);
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                currentUser = JsonSerializer.Deserialize<User>(jsonData);
+            }
+            else
+            {
+                // File exists but is empty, initialize with default values
+                currentUser = new User();
+            }
+        }
+        else
+        {
+            // File does not exist, initialize with default values
+            currentUser = new User();
+        }
+    }
+
+    private async Task SaveUser()
+    {
+        string jsonData = JsonSerializer.Serialize(currentUser);
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        await File.WriteAllTextAsync(filePath, jsonData);
+    }
+
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file != null)
+        {
+            // Read the selected file data
+            var ms = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(ms);
+            currentUser.Logo = Convert.ToBase64String(ms.ToArray());
+        }
+    }
+}

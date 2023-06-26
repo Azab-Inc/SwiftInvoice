@@ -2,12 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {    
+@layer components {
     nav a {
-        @apply hover:bg-slate-700 hover:text-white text-white px-3 py-1;
+        @apply hover:bg-blue-700 hover:text-white text-white text-xl px-3 py-1;
     }
 
-    button {
-        @apply border-2 border-red-500;
+    a button {
+        @apply text-white text-xl px-4 py-2;
+    }
+
+    .btn-pri {
+        @apply bg-pri hover:bg-blue-700;
+    }
+
+    .btn-warn {
+        @apply bg-warn text-white;
+    }
+
+    .btn-danger {
+        @apply bg-danger;
+    }
+
+    form label input {
+        @apply border-2 focus:border-4 border-pri p-3 w-full sm:w-1/2;
+    }
+
+    form label span {
+        @apply text-accent text-xl sm:mr-2 w-full sm:w-1/3; 
+    }
+
+    form label {
+        @apply flex flex-col sm:flex-row my-3;
+    }
+
+    .page-heading {
+        @apply text-pri text-5xl font-bold mb-5;
     }
 }
