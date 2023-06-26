@@ -1,6 +1,6 @@
 ﻿namespace UniversalApp.Models
 {
-    internal class Item
+    public class Item
     {
         public int Id { get; set; }
 
