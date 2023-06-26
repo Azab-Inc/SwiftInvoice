@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversalApp.Models
 {
-    internal class Invoice
+    public class Invoice
     {
         public int InvoiceId { get; set; }
 
