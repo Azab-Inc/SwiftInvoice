@@ -7,7 +7,9 @@ namespace UniversalApp.Models
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string BusinessNumber { get; set; }
+        public int BusinessNumber { get; set; }
+
+        public string BusinessName { get; set; }
         public string Email { get; set; }
         public string BankAccNumber { get; set; }
         public string BankName { get; set; }
