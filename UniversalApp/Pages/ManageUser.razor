@@ -1,7 +1,8 @@
-﻿@page "/user"
+﻿@page "/user";
 @using System.Text.Json;
 @using System.Reflection;
-@using UniversalApp.Models
+@using UniversalApp.Models;
+@using UniversalApp.Services;
 
 <h1 class="page-heading">Manage User</h1>
 
@@ -23,10 +24,7 @@
             <span>Email:</span>
             <input @bind="currentUser.Email" name="email" type="email" />
         </label>
-        <label>
-            <span>Logo:</span>
-            <input @bind="currentUser.Logo" name="logo" type="file" />
-        </label>
+      
         <label>
             <span>Bank Acc Number</span>
             <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="number" />
@@ -52,31 +50,12 @@
 
 @code {
     public User currentUser = new User();
-    private string filePath;
+    private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SwiftInvoiceData", "User", "user.json");
+    public UserService userService = new UserService();
 
     protected override void OnInitialized()
     {
-        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        filePath = Path.Combine(baseDirectory, "SwiftInvoiceData", "User", "user.json");
-
-        if (File.Exists(filePath))
-        {
-            string jsonData = File.ReadAllText(filePath);
-            if (!string.IsNullOrEmpty(jsonData))
-            {
-                currentUser = JsonSerializer.Deserialize<User>(jsonData);
-            }
-            else
-            {
-                // File exists but is empty, initialize with default values
-                currentUser = new User();
-            }
-        }
-        else
-        {
-            // File does not exist, initialize with default values
-            currentUser = new User();
-        }
+        currentUser = userService.getUser();
     }
 
     private async Task SaveUser()
@@ -86,16 +65,5 @@
         await File.WriteAllTextAsync(filePath, jsonData);
     }
 
-    private async Task HandleFileSelection(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
 
-        if (file != null)
-        {
-            // Read the selected file data
-            var ms = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(ms);
-            currentUser.Logo = Convert.ToBase64String(ms.ToArray());
-        }
-    }
 }
