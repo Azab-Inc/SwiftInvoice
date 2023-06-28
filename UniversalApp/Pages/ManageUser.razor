@@ -50,7 +50,6 @@
 
 @code {
     public User currentUser = new User();
-    private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SwiftInvoiceData", "User", "user.json");
     public UserService userService = new UserService();
 
     protected override void OnInitialized()
@@ -60,9 +59,7 @@
 
     private async Task SaveUser()
     {
-        string jsonData = JsonSerializer.Serialize(currentUser);
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-        await File.WriteAllTextAsync(filePath, jsonData);
+        await userService.saveUser(currentUser);
     }
 
 
