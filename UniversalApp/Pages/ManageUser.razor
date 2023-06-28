@@ -17,6 +17,10 @@
             </div>
         </label>
         <label>
+            <span>Business Name: </span>
+            <input @bind="currentUser.BusinessName" name="business-name" type="text" />
+        </label>
+        <label>
             <span>Business Number:</span>
             <input @bind="currentUser.BusinessNumber" name="business-num" type="number" />
         </label>
@@ -61,6 +65,4 @@
     {
         await userService.saveUser(currentUser);
     }
-
-
 }
