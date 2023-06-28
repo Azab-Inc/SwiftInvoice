@@ -11,17 +11,12 @@ namespace UniversalApp.Services
     public class UserService
     {
         public User currentUser = new User();
-
-
-    
-        private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SwiftInvoiceData", "User", "user.json");
-        
-
+          
         public User getUser()
         {
-            if (File.Exists(filePath))
+            if (File.Exists(getUserFile()))
             {
-                string jsonData = File.ReadAllText(filePath);
+                string jsonData = File.ReadAllText(getUserFile());
                 if (!string.IsNullOrEmpty(jsonData))
                 {
                     currentUser = JsonSerializer.Deserialize<User>(jsonData);
@@ -38,6 +33,18 @@ namespace UniversalApp.Services
                 currentUser = new User();
             }
             return currentUser;
+        }
+
+        public async Task saveUser(User user)
+        {
+            string jsonData = JsonSerializer.Serialize(user);
+            Directory.CreateDirectory(Path.GetDirectoryName(getUserFile()));
+            await File.WriteAllTextAsync(getUserFile(), jsonData);
+        }
+
+        public string getUserFile()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SwiftInvoiceData", "User", "user.json");
         }
     }
 }
