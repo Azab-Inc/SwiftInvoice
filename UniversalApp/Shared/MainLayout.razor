@@ -1,10 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+<div class="page flex sm:flex-row flex-col">
     <NavMenu />
-    <main>
-        <article class="flex flex-col items-center justify-center p-5 min-h-full">
+    
+        <main class="flex flex-col items-center justify-center p-5 min-h-full mx-auto">
             @Body
-        </article>
-    </main>
+        </main>
+    
 </div>
