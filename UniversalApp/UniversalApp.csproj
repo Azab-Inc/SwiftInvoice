@@ -70,6 +70,10 @@
       <None Include="**\*" Exclude="**\*.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="Shared\Components\SurveyComponent.razor" />
+    </ItemGroup>
+
 
 
 </Project>
