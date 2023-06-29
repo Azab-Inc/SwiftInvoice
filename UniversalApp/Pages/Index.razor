@@ -1,8 +1,18 @@
 ﻿@page "/"
+@using UniversalApp.Shared.Components
 
 <h1 class="page-heading text-center">Welcome to SwiftInvoice</h1>
+<div class="border-2 rounded-full px-3 py-1 text-accent border-accent text-xl my-3">Open beta</div>
 
 <div class="flex items-center flex-col sm:flex-row gap-3">
     <a href="/showall"><button class="btn-pri">See all invoices</button></a>
     <a href="/newinvoice"><button class="btn-pri">Make new invoice</button></a>
 </div>
+
+<SurveyComponent></SurveyComponent>
+
+<span class="fixed bottom-5 mx-auto">Make by <a href="https://azaber.com/">@currentYear Azaber</a></span>
+
+@code {
+    private int currentYear = DateTime.Now.Year;
+}
