@@ -15,6 +15,10 @@
         @apply bg-pri hover:bg-blue-700;
     }
 
+    .btn-sec {
+        @apply bg-white text-pri border-2 border-pri hover:bg-slate-50;
+    }
+
     .btn-warn {
         @apply bg-warn text-white;
     }
