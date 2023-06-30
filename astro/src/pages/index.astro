@@ -1,15 +1,12 @@
 ---
+import MainLayout from "../layouts/main-layout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout pageTitle="Welcome">
+	<h1 class="text-8xl font-bold text-pri">Swift Invoice</h1>
+	<h2 class="text-accent">Invoices made easy</h2>
+	<div class="flex flex-row gap-3">
+		<button class="btn btn-sec">See more</button>
+		<button class="btn btn-pri">Get started</button>
+	</div>
+</MainLayout>
