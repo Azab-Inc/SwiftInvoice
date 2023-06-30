@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .btn {
+    @apply rounded-md px-3 py-1;
+  }
+  .btn-pri {
+    @apply bg-pri text-white;
+  }
+  .btn-sec {
+    @apply border-2 border-pri bg-white text-pri;
+  }
+}/*# sourceMappingURL=main.css.map */
