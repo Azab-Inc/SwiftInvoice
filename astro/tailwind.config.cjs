@@ -7,17 +7,12 @@ module.exports = {
         pri: "#03a9f4",
         accent: "#9aa1ab",
       },
-      theme: {
-        screens: {
-          mobile: "480px",
-          // => @media (min-width: 480px) { ... }
+      screens: {
+        mobile: "480px",
 
-          tablet: "640px",
-          // => @media (min-width: 640px) { ... }
+        tablet: "780px",
 
-          desktop: "1024px",
-          // => @media (min-width: 1024px) { ... }
-        },
+        desktop: "1024px",
       },
     },
   },
