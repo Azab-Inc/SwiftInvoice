@@ -622,7 +622,7 @@ a button {
   background-color: rgb(220 53 69 / var(--tw-bg-opacity));
 }
 
-form label input {
+form label input, form label textarea {
   width: 100%;
   border-width: 2px;
   --tw-border-opacity: 1;
@@ -630,14 +630,8 @@ form label input {
   padding: 0.75rem;
 }
 
-form label input:focus {
+form label input:focus, form label textarea:focus {
   border-width: 4px;
-}
-
-@media (min-width: 640px) {
-  form label input {
-    width: 50%;
-  }
 }
 
 form label span {
@@ -651,7 +645,6 @@ form label span {
 @media (min-width: 640px) {
   form label span {
     margin-right: 0.5rem;
-    width: 33.333333%;
   }
 }
 
@@ -670,6 +663,7 @@ form label {
 
 .page-heading {
   margin-bottom: 1.25rem;
+  text-align: center;
   font-size: 3rem;
   line-height: 1;
   font-weight: 700;
@@ -1188,12 +1182,12 @@ form label {
   height: auto;
 }
 
-.min-h-full {
-  min-height: 100%;
-}
-
 .min-h-\[100vh\] {
   min-height: 100vh;
+}
+
+.min-h-full {
+  min-height: 100%;
 }
 
 .w-1 {
@@ -2249,6 +2243,11 @@ form label {
   border-color: rgb(239 68 68 / var(--tw-border-opacity));
 }
 
+.border-success {
+  --tw-border-opacity: 1;
+  border-color: rgb(40 167 69 / var(--tw-border-opacity));
+}
+
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
@@ -2267,6 +2266,11 @@ form label {
 .bg-pri {
   --tw-bg-opacity: 1;
   background-color: rgb(55 117 248 / var(--tw-bg-opacity));
+}
+
+.bg-success {
+  --tw-bg-opacity: 1;
+  background-color: rgb(40 167 69 / var(--tw-bg-opacity));
 }
 
 .bg-transparent {
@@ -2804,6 +2808,11 @@ form label {
 .text-pri {
   --tw-text-opacity: 1;
   color: rgb(55 117 248 / var(--tw-text-opacity));
+}
+
+.text-success {
+  --tw-text-opacity: 1;
+  color: rgb(40 167 69 / var(--tw-text-opacity));
 }
 
 .text-white {
