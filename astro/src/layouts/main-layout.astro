@@ -1,0 +1,20 @@
+---
+import Nav from "../components/nav.astro";
+const { pageTitle } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="stylesheet" href="src/styles/main.css" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Swift Invoice - {pageTitle}</title>
+    </head>
+    <body>
+        <Nav />
+        <div class="flex flex-col justify-center items-center mx-auto w-4/5">
+            <slot />
+        </div>
+    </body>
+</html>
