@@ -6,7 +6,7 @@
 
 <h1 class="page-heading">Manage User</h1>
 
-<form class="flex sm:flex-row flex-col">
+<form class="flex md:flex-row flex-col">
     <div class="flex flex-col gap-3">
         <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Required</span>
         <label class="flex flex-col">
@@ -27,16 +27,15 @@
         <label>
             <span>Email:</span>
             <input @bind="currentUser.Email" name="email" type="email" />
-        </label>
-      
+        </label>      
         <label>
-            <span>Bank Acc Number</span>
-            <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="number" />
-        </label>
-        <label>
-            <span>Bank Name</span>
+            <span>Bank Name:</span>
             <input @bind="currentUser.BankName" name="bankName" type="text" />
         </label>
+        <label>
+            <span>Bank Acc Number:</span>
+            <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="number" />
+        </label>        
     </div>
     <div class="flex flex-col gap-3">
         <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Optional</span>
