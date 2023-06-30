@@ -1,2 +1,0 @@
-# SwiftInvoice
-Easy invoicing software
