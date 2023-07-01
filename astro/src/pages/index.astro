@@ -1,11 +1,14 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
+import Logo from "../components/logo.astro";
 ---
 
 <MainLayout pageTitle="Welcome">
 	<section>
 		<div class="content">
-			<h1 class="text-5xl mobile:text-7xl text-center">Swift Invoice</h1>
+			<div class="flex flex-col justify-center items-center">
+				<Logo />
+			</div>
 			<h2 class="text-2xl mobile:text-4xl text-accent">
 				Invoices made easy
 			</h2>
@@ -19,7 +22,7 @@ import MainLayout from "../layouts/main-layout.astro";
 			</div>
 		</div>
 	</section>
-	<section id="seemore" class="bg-sec">
+	<section id="seemore" class="section-sec">
 		<div class="content">
 			<div class="mx-auto flex flex-col tablet:flex-row">
 				<div class="w-full tablet:w-1/2 flex flex-col gap-3">
@@ -34,8 +37,9 @@ import MainLayout from "../layouts/main-layout.astro";
 						various devices and operating systems.
 					</p>
 					<span class="text-pri font-bold">
-						We also offer <a class="underline" href="#cloud"
-							>Swift Invoice cloud</a
+						Get more out of Swift Invoice with <a
+							class="underline"
+							href="#cloud">Swift Invoice cloud</a
 						>
 					</span>
 				</div>
