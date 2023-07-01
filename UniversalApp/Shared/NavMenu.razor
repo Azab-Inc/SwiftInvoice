@@ -1,15 +1,23 @@
-﻿<nav class="flex flex-col bg-[#3775f8] hidden sm:flex sm:h-[100vh] fixed top-0 left-0 bottom-0 w-52">
-    <a class="mb-5 mt-3 text-3xl font-bold hover:bg-[#3775f8]" href="/">SwiftInvoice</a>
+﻿@using UniversalApp.Shared.Components;
+
+<nav class="flex flex-col bg-pri hidden sm:flex sm:h-[100vh] fixed top-0 left-0 bottom-0 w-52">
+    
+        
+    <a href="/">
+        <h1 class="text-3xl font-bold">
+            <i>Swift</i> <br /> Invoice
+        </h1>
+    </a>
     <a href="/user">Manage Profile</a>
     <a href="/showall">All Invoices</a>
     <a href="/support">Support</a>
     <button class="btn-danger mt-auto py-3 font-bold text-white" @onclick="closeApp">Quit</button>
 </nav>
-<nav class="bg-[#3775f8] flex items-center justify-between sm:hidden px-3 py-1 fixed top-0 right-0 left-0">
-    <a class="text-3xl font-bold hover:bg-[#3775f8]" href="/">SwiftInvoice</a>
+<nav class="bg-pri flex items-center justify-between sm:hidden px-3 py-1 fixed top-0 right-0 left-0">
+    <a class="text-3xl font-bold hover:bg-pri" href="/">SwiftInvoice</a>
     <button class="fa-solid fa-bars fa-2xl" style="color: #ffffff;" @onclick="toggleMenu"></button>
 </nav>
-<div id="mobile-nav" class="w-full fixed inset-y-0 bg-[#3775f8] transform transition-transform ease-in-out duration-900 sm:hidden" hidden="@menuHidden">
+<div id="mobile-nav" class="w-full fixed inset-y-0 bg-pri transform transition-transform ease-in-out duration-900 sm:hidden" hidden="@menuHidden">
     <button class="fa-solid fa-bars fa-2xl fixed right-4 top-7" style="color: #ffffff;" @onclick="toggleMenu"></button>
 
     <div class="flex flex-col justify-center items-center text-5xl font-bold gap-3 text-white h-full text-center">
