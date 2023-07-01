@@ -4,7 +4,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'pri': '#3775f8',
+                'pri': '#1478aa',
+                'sec': '#03a9f4',
                 'success': '#28a745',
                 'warn': '#ffc107',
                 'danger': '#dc3545',
