@@ -25,6 +25,11 @@
             <input @bind="currentUser.BusinessNumber" name="business-num" type="number" />
         </label>
         <label>
+            <span>Business Logo Image link:</span>
+            <input @bind="currentUser.LogoPath" name="logo" type="text" />
+        </label>
+        <img src="@currentUser.LogoPath" class="w-48 h-24" />
+        <label>
             <span>Email:</span>
             <input @bind="currentUser.Email" name="email" type="email" />
         </label>      
@@ -54,6 +59,7 @@
 @code {
     public User currentUser = new User();
     public UserService userService = new UserService();
+    
 
     protected override void OnInitialized()
     {
