@@ -13,7 +13,7 @@ namespace UniversalApp.Models
         public string Email { get; set; }
         public string BankAccNumber { get; set; }
         public string BankName { get; set; }
-        public FileImageSource Logo { get; set; }
+        public string LogoPath { get; set; }
         public int Phone { get; set; }
         public string Website { get; set; }
     }
