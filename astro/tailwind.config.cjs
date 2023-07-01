@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         pri: "#1478aa",
+        sec: "#03a9f4",
         accent: "#9aa1ab",
       },
       screens: {
