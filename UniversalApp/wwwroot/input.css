@@ -3,8 +3,17 @@
 @tailwind utilities;
 
 @layer components {
+
+    * {
+        @apply duration-300;
+    }
+
     nav a {
-        @apply hover:bg-blue-700 hover:text-white text-white text-xl px-3 py-1;
+        @apply hover:bg-[#106894] hover:text-white text-white text-xl px-3 py-1;
+    }
+
+    p {
+        @apply text-lg;
     }
 
     a button {
@@ -12,7 +21,7 @@
     }
 
     .btn-pri {
-        @apply bg-pri hover:bg-blue-700;
+        @apply bg-pri hover:bg-[#106894];
     }
 
     .btn-sec {
