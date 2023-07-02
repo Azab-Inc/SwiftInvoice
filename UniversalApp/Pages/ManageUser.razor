@@ -57,9 +57,8 @@
 <button class="btn-warn text-xl p-2 mt-3" @onclick="SaveUser">Save changes</button>
 
 @code {
-    public User currentUser = new User();
-    public UserService userService = new UserService();
-    
+    private User currentUser = new User();
+    private UserService userService = new UserService();
 
     protected override void OnInitialized()
     {
