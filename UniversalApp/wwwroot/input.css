@@ -28,6 +28,10 @@
         @apply bg-white text-pri border-2 border-pri hover:bg-slate-50;
     }
 
+    .btn-suc {
+        @apply bg-success text-white hover:bg-green-700;
+    }
+
     .btn-warn {
         @apply bg-warn text-white;
     }
