@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace UniversalApp;
 
@@ -19,8 +20,7 @@ public static class MauiProgram
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
-#endif
-
-		return builder.Build();
+#endif		
+        return builder.Build();
 	}
 }
