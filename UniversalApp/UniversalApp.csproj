@@ -51,14 +51,12 @@
 
     <ItemGroup>
         <PackageReference Include="BlazorExtensions" Version="0.5.1" />
+        <PackageReference Include="BlazorInputFile" Version="0.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />        
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />        
+        <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />        
+        <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.5" />
     </ItemGroup>
 
     <ItemGroup>

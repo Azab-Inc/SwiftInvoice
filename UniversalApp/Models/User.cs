@@ -1,10 +1,15 @@
 ﻿using System.IO;
+using SQLite;
 
 namespace UniversalApp.Models
 {
+    [Table("users")]
     public class User
     {
+        [PrimaryKey, AutoIncrement]
         public int UserId { get; set; }
+
+        public string AccString { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int BusinessNumber { get; set; }

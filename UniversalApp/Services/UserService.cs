@@ -1,45 +1,47 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using UniversalApp.Models;
 
 namespace UniversalApp.Services
 {
     public class UserService
     {
-        public User currentUser = new User();
-          
-        public User getUser()
+        private DbService dbService = new DbService();
+
+        public UserService()
         {
-            if (File.Exists(getUserFile()))
-            {
-                string jsonData = File.ReadAllText(getUserFile());
-                if (!string.IsNullOrEmpty(jsonData))
-                {
-                    currentUser = JsonSerializer.Deserialize<User>(jsonData);
-                }
-                else
-                {
-                    // File exists but is empty, initialize with default values
-                    currentUser = new User();
-                }
-            }
-            else
-            {
-                // File does not exist, initialize with default values
-                currentUser = new User();
-            }
-            return currentUser;
+
         }
 
-        public async Task saveUser(User user)
+        public void dbSaveUser(User user)
         {
-            string jsonData = JsonSerializer.Serialize(user);
-            Directory.CreateDirectory(Path.GetDirectoryName(getUserFile()));
-            await File.WriteAllTextAsync(getUserFile(), jsonData);
+            dbService.RunQuery();
+            try
+            {
+                dbService.GetConnection().Update(user);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
         }
 
-        public string getUserFile()
+        public User dbLoadUser()
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SwiftInvoiceData", "User", "user.json");
+            dbService.RunQuery();
+            try
+            {
+                User user = dbService.GetConnection().Table<User>().FirstOrDefault();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
         }
     }
 }

@@ -1,8 +1,11 @@
-﻿@page "/user";
-@using System.Text.Json;
-@using System.Reflection;
-@using UniversalApp.Models;
-@using UniversalApp.Services;
+﻿@page "/user"
+@using System.Text.Json
+@using System.Reflection
+@using UniversalApp.Models
+@using UniversalApp.Services
+@using System.Diagnostics
+@using BlazorInputFile
+
 
 <h1 class="page-heading">Manage User</h1>
 
@@ -25,14 +28,15 @@
             <input @bind="currentUser.BusinessNumber" name="business-num" type="number" />
         </label>
         <label>
-            <span>Business Logo Image link:</span>
-            <input @bind="currentUser.LogoPath" name="logo" type="text" />
+            <span>Business Logo Image:</span>
+            <input @bind="currentUser.LogoPath" name="business-logo" type="text" />            
         </label>
         <img src="@currentUser.LogoPath" class="w-48 h-24" />
+        
         <label>
             <span>Email:</span>
             <input @bind="currentUser.Email" name="email" type="email" />
-        </label>      
+        </label>
         <label>
             <span>Bank Name:</span>
             <input @bind="currentUser.BankName" name="bankName" type="text" />
@@ -40,7 +44,7 @@
         <label>
             <span>Bank Acc Number:</span>
             <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="number" />
-        </label>        
+        </label>
     </div>
     <div class="flex flex-col gap-3">
         <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Optional</span>
@@ -54,19 +58,22 @@
         </label>
     </div>
 </form>
+
 <button class="btn-warn text-xl p-2 mt-3" @onclick="SaveUser">Save changes</button>
 
 @code {
     private User currentUser = new User();
     private UserService userService = new UserService();
+    private string imageDataUrl;
 
     protected override void OnInitialized()
     {
-        currentUser = userService.getUser();
+        currentUser = userService.dbLoadUser();
+        imageDataUrl = currentUser.LogoPath;
     }
 
-    private async Task SaveUser()
+    private void SaveUser()
     {
-        await userService.saveUser(currentUser);
+        userService.dbSaveUser(currentUser);
     }
 }
