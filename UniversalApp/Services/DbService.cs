@@ -18,7 +18,11 @@ namespace UniversalApp.Services
 
         public SQLiteConnection GetConnection()
         {
-            dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwiftInvoice",  "SwiftInvoiceData.db3");
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwiftInvoice");
+            Directory.CreateDirectory(folderPath);
+
+            dbPath = Path.Combine(folderPath, "SwiftInvoiceData.db3");
+
             return new SQLiteConnection(dbPath);
         }
 
