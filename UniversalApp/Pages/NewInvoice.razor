@@ -1,6 +1,7 @@
 ﻿@page "/newinvoice"
 @using UniversalApp.Models;
 @using UniversalApp.Services;
+@using UniversalApp.Shared.Components;
 
 <h1 class="page-heading">New Invoice</h1>
 
@@ -36,47 +37,80 @@
     </div>
     <hr />
     <div>
-        <!--Items section-->
-        <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md">
-            <div class="w-full flex md:flex-row flex-col gap-3">
-                <div class="flex flex-col w-1/5">
-                    <span>Item name:</span>
-                    <input class="border-2 border-pri rounded-sm" type="text" />
+        <!-- Items section -->
+        @foreach (var item in invoiceItems)
+        {
+            <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md">
+                <div class="w-full flex md:flex-row flex-col gap-3">
+                    <div class="flex flex-col w-1/5">
+                        <span>Item name:</span>
+                        <input class="border-2 border-pri rounded-sm" @bind="item.Name" type="text" />
+                    </div>
+                    <div class="flex flex-col w-3/5">
+                        <span>Description: </span>
+                        <textarea class="border-2 border-pri rounded-sm" @bind="item.Description" rows="2" cols="10"></textarea>
+                    </div>
+                    <div class="flex flex-col w-1/5">
+                        <span>Price: </span>
+                        <input class="border-2 border-pri rounded-sm" @bind="item.Price" type="number" />
+                    </div>
                 </div>
-                <div class="flex flex-col w-3/5">
-                    <span>Description: </span>
-                    <textarea class="border-2 border-pri rounded-sm" rows="2" cols="10"></textarea>
-                </div>
-                <div class="flex flex-col w-1/5">
-                    <span>Price: </span>
-                    <input class="border-2 border-pri rounded-sm" type="number" />
+                <div class="mt-3">
+                    <button class="btn btn-danger" @onclick:preventDefault="true" @onclick="(() => RemoveItem(item))">Remove item</button>
                 </div>
             </div>
-            <div class="mt-3">
-                <button class="btn btn-danger">Remove item</button>
-                <button class="btn btn-sec">Add item</button>
-            </div>
-        </div>
-        <!---->
+        }
 
+        <div class="mt-3">
+            <button class="btn btn-sec" @onclick:preventDefault="true" @onclick="AddItem">Add item</button>
+        </div>
     </div>
 </form>
 
-<button class="btn-suc text-xl px-4 py-2">Create Invoice</button>
+@if (!createdInvoice)
+{
+    <button class="btn-suc text-xl px-4 py-2" @onclick="SaveInvoice">Create Invoice</button>
+}
 
 <a href="/showall"><button class="btn-warn mt-3">Back</button></a>
+
+@if (createdInvoice)
+{
+    <div class="mt-3">
+        <ToasterComponent Message="Invoice created!" Type="success" Redirect="true" Location="invoices" Url="showall" />
+    </div>
+}
+
 
 @code {
     private InvoiceService invoiceService = new InvoiceService();
     private Invoice newInvoice = new Invoice();
     private List<Item> invoiceItems = new List<Item>();
-       
+
     private UserService userService = new UserService();
     private User currentUser = new User();
+    private bool createdInvoice = false;
 
     protected override void OnInitialized()
     {
         currentUser = userService.dbLoadUser();
         newInvoice.UserId = currentUser.UserId;
+    }
+
+    private void AddItem()
+    {
+        invoiceItems.Add(new Item());
+    }
+
+    private void RemoveItem(Item item)
+    {
+        invoiceItems.Remove(item);
+    }
+
+    private void SaveInvoice()
+    {
+        newInvoice.UserId = currentUser.UserId;
+        invoiceService.dbCreateInvoice(newInvoice, invoiceItems);
+        createdInvoice = true;
     }
 }
