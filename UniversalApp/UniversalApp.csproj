@@ -73,6 +73,15 @@
 
     <ItemGroup>
       <Content Remove="Shared\Components\SurveyComponent.razor" />
+      <Content Remove="Shared\Components\ToasterComponent.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Shared\Components\ToasterComponent.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Shared\Components\ToasterComponent.razor" />
     </ItemGroup>
 
 
