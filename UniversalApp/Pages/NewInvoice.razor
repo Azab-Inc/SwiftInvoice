@@ -2,6 +2,8 @@
 @using UniversalApp.Models;
 @using UniversalApp.Services;
 @using UniversalApp.Shared.Components;
+@using Microsoft.AspNetCore.Components.Forms
+
 
 <h1 class="page-heading">New Invoice</h1>
 
@@ -16,18 +18,23 @@
             <input @bind="newInvoice.JobName" name="job-name" type="text" />
         </label>
         <hr />
+        <!-- ... (previous code) ... -->
         <label>
             <span>START date:</span>
-            <input @bind="newInvoice.StartDate" name="start-date" type="datetime" />
+            <InputDate @bind-Value="newInvoice.StartDate" format="dd/MM/yyyy" />
         </label>
         <label>
             <span>END date:</span>
-            <input @bind="newInvoice.EndDate" name="end-date" type="datetime" />
+            <InputDate @bind-Value="newInvoice.EndDate" format="dd/MM/yyyy" />
         </label>
         <label>
             <span>PAYMENT date:</span>
-            <input @bind="newInvoice.PaymentDate" name="pay-date" type="datetime" />
+            <InputDate @bind-Value="newInvoice.PaymentDate" format="dd/MM/yyyy" />
         </label>
+
+
+        <!-- ... (rest of your code) ... -->
+
     </div>
     <div class="md:w-2/5">
         <label class="flex flex-col">
@@ -40,19 +47,19 @@
         <!-- Items section -->
         @foreach (var item in invoiceItems)
         {
-            <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md">
+            <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md mt-3 mx-auto">
                 <div class="w-full flex md:flex-row flex-col gap-3">
                     <div class="flex flex-col w-1/5">
                         <span>Item name:</span>
-                        <input class="border-2 border-pri rounded-sm" @bind="item.Name" type="text" />
+                        <input class="border-2 border-pri rounded-sm p-3" @bind="item.Name" type="text" />
                     </div>
                     <div class="flex flex-col w-3/5">
                         <span>Description: </span>
-                        <textarea class="border-2 border-pri rounded-sm" @bind="item.Description" rows="2" cols="10"></textarea>
+                        <textarea class="border-2 border-pri rounded-sm p-3" @bind="item.Description" rows="2" cols="10"></textarea>
                     </div>
                     <div class="flex flex-col w-1/5">
                         <span>Price: </span>
-                        <input class="border-2 border-pri rounded-sm" @bind="item.Price" type="number" />
+                        <input class="border-2 border-pri rounded-sm p-3" @bind="item.Price" type="number" />
                     </div>
                 </div>
                 <div class="mt-3">
@@ -95,6 +102,9 @@
     {
         currentUser = userService.dbLoadUser();
         newInvoice.UserId = currentUser.UserId;
+        newInvoice.StartDate = DateTime.Now;
+        newInvoice.EndDate = DateTime.Now;
+        newInvoice.PaymentDate = DateTime.Now;
     }
 
     private void AddItem()

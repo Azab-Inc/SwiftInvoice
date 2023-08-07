@@ -15,19 +15,23 @@ namespace UniversalApp.Services
             
             try
             {
-
-                // Add invoice
-                dbService.GetConnection().Insert(invoice);
-
-                // Get newest invoice id
-                int newInvoiceId = dbService.GetConnection().Table<Invoice>().OrderByDescending(i => i.InvoiceId).First().InvoiceId;
-
-                // Add invoice items with the new invoice id
-                foreach (var item in items)
+                using (var connection = dbService.GetConnection())
                 {
-                    item.InvoiceId = newInvoiceId;
-                    dbService.GetConnection().Insert(item);
+                    // Add invoice
+                    connection.Insert(invoice);
+
+                    // Get newest invoice id
+                    int newInvoiceId = connection.Table<Invoice>().OrderByDescending(i => i.InvoiceId).First().InvoiceId;
+
+                    // Add invoice items with the new invoice id
+                    foreach (var item in items)
+                    {
+                        item.InvoiceId = newInvoiceId;
+                        connection.Insert(item);
+                    }
                 }
+
+                
                 
             }
             catch (Exception ex)
@@ -55,16 +59,20 @@ namespace UniversalApp.Services
             return null;
         }
 
-        public List<Invoice> dbShowInvoices()
+        public List<Invoice> dbGetInvoices(int userId)
         {
-            // Return most recent invoices
             dbService.RunQuery();
 
-            try 
+            try
             {
-            
-            }
+                using (var connection = dbService.GetConnection())
+                {
+                    // Retrieve invoices by user ID
+                    List<Invoice> invoices = connection.Table<Invoice>().Where(i => i.UserId == userId).ToList();
 
+                    return invoices;
+                }
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
@@ -73,7 +81,7 @@ namespace UniversalApp.Services
             return null;
         }
 
-        public List<Item> dbGetItems(int id)
+        public List<Item> dbGetItems(int invoiceId)
         {
             // Get items by invoice id
 
