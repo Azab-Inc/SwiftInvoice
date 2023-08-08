@@ -1,9 +1,37 @@
 ﻿@page "/showall"
+@using UniversalApp.Models;
+@using UniversalApp.Services;
 
 <h1 class="page-heading">All invoices</h1>
 
 <a href="/newinvoice"><button class="btn-pri ml-auto">New invoice</button></a>
 
-<div>
-    ALL INVOICES
+<div class="flex flex-row flex-wrap gap-3 items-center justify-center my-3">
+    @foreach (Invoice invoice in invoices)
+    {
+        <div class="flex flex-col p-3 border-2 border-pri max-w-[100%] sm:max-w-[33%] min-w-[25%]">
+            <h2 class="text-2xl font-bold">@invoice.JobName</h2>
+            <h3>For <strong>@invoice.ClientName</strong></h3>
+
+
+            <div class="flex flex-wrap justify-center items-center mt-3 gap-3">
+                <button class="btn btn-warn">Edit</button>
+                <button class="btn btn-sec">Send</button>
+            </div>
+
+        </div>
+    }
 </div>
+
+@code {
+    private InvoiceService invoiceService = new InvoiceService();
+    private UserService userService = new UserService();
+    private List<Invoice> invoices = new List<Invoice>();
+    private User currentUser = new User();
+
+    protected override void OnInitialized()
+    {
+        currentUser = userService.dbLoadUser();
+        invoices = invoiceService.dbGetInvoices(currentUser.UserId);
+    }
+}
