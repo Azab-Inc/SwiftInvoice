@@ -1,5 +1,7 @@
 ﻿<div class="flex justify-between border-2 px-5 py-3 rounded-md text-white
-    @(Type == "danger" ? "bg-red-500 border-red-800" : "bg-green-500 border-green-800")">
+    @(Type == "danger" ? "bg-red-500 border-red-800" :
+      Type == "success" ? "bg-green-500 border-green-800" :
+      Type == "warn" ? "bg-yellow-500 border-yellow-800" : "")">
     <h2>@Message</h2>
 
     @if (Redirect)
