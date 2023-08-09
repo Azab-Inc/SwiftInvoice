@@ -73,6 +73,7 @@
 
     <ItemGroup>
       <Content Remove="Pages\EditInvoice.razor" />
+      <Content Remove="Pages\SendInvoice.razor" />
       <Content Remove="Shared\Components\SurveyComponent.razor" />
       <Content Remove="Shared\Components\ToasterComponent.razor" />
     </ItemGroup>
