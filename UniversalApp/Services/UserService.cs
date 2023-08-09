@@ -43,5 +43,21 @@ namespace UniversalApp.Services
                 return null;
             }
         }
+
+        public User dbGetUser(int userId)
+        {
+            dbService.RunQuery();
+            try
+            {
+                User user = dbService.GetConnection().Table<User>().FirstOrDefault(u => u.UserId == userId);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
+        }
+
     }
 }
