@@ -704,6 +704,14 @@ form label {
   color: rgb(20 120 170 / var(--tw-text-opacity));
 }
 
+td, th {
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+  padding: 0.75rem;
+  text-align: left;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -2237,6 +2245,10 @@ form label {
   border-top-width: 1px;
 }
 
+.border-t-\[1px\] {
+  border-top-width: 1px;
+}
+
 .border-solid {
   border-style: solid;
 }
@@ -2259,6 +2271,11 @@ form label {
 
 .border-none {
   border-style: none;
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .border-danger {
