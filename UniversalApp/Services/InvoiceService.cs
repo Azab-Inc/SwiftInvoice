@@ -12,7 +12,7 @@ namespace UniversalApp.Services
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
         {
             dbService.RunQuery();
-            
+
             try
             {
                 using (var connection = dbService.GetConnection())
@@ -31,14 +31,14 @@ namespace UniversalApp.Services
                     }
                 }
 
-                
-                
+
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
-            
+
         }
 
         public void dbEditInvoice(Invoice invoice, List<Item> items)
@@ -53,34 +53,27 @@ namespace UniversalApp.Services
                     if (existingInvoice != null)
                     {
                         // Update invoice details
+                        existingInvoice.InvoiceNum = invoice.InvoiceNum;
                         existingInvoice.ClientName = invoice.ClientName;
                         existingInvoice.JobName = invoice.JobName;
                         existingInvoice.JobDescription = invoice.JobDescription;
                         existingInvoice.StartDate = invoice.StartDate;
                         existingInvoice.EndDate = invoice.EndDate;
                         existingInvoice.PaymentDate = invoice.PaymentDate;
+                        existingInvoice.CreatedDate = invoice.CreatedDate;
                         existingInvoice.Total = invoice.Total;
 
                         // Update the invoice in the database
                         connection.Update(existingInvoice);
 
-                        // Get existing items associated with the invoice
-                        var existingItems = connection.Table<Item>().Where(i => i.InvoiceId == invoice.InvoiceId).ToList();
+                        // Delete existing items associated with the invoice
+                        dbDeleteItems(existingInvoice.InvoiceId);
 
-                        // Loop over items and make updates
+                        // Add the new items with the updated invoice id
                         foreach (var newItem in items)
                         {
-                            var existingItem = existingItems.FirstOrDefault(e => e.ItemId == newItem.ItemId);
-
-                            if (existingItem != null)
-                            {
-                                existingItem.Name = newItem.Name;
-                                existingItem.Description = newItem.Description;
-                                existingItem.Price = newItem.Price;
-
-                                // Update the item in the database
-                                connection.Update(existingItem);
-                            }
+                            newItem.InvoiceId = existingInvoice.InvoiceId;
+                            connection.Insert(newItem);
                         }
                     }
                 }
@@ -90,6 +83,7 @@ namespace UniversalApp.Services
                 Debug.WriteLine(ex);
             }
         }
+
 
 
         public Invoice dbGetInvoice(int invoiceId)
@@ -132,7 +126,23 @@ namespace UniversalApp.Services
             return null;
         }
 
+        public void dbDeleteItems(int invoiceId)
+        {
+            dbService.RunQuery();
 
+            try
+            {
+                using (var connection = dbService.GetConnection())
+                {
+                    // Delete invoice items associated with the given invoiceId
+                    connection.Table<Item>().Delete(i => i.InvoiceId == invoiceId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
 
         public List<Invoice> dbGetInvoices(int userId)
         {
