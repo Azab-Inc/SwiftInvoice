@@ -10,6 +10,10 @@
 <form class="new-invoice mx-auto my-3 flex md:flex-wrap md:flex-row flex-col gap-3">
     <div class="md:w-2/5">
         <label>
+            <span>Invoice num:</span>
+            <input @bind="newInvoice.InvoiceNum" name="invoice-num" type="text" />
+        </label>
+        <label>
             <span>Client name:</span>
             <input @bind="newInvoice.ClientName" name="client-name" type="text" />
         </label>
@@ -30,6 +34,10 @@
         <label>
             <span>PAYMENT date:</span>
             <InputDate @bind-Value="newInvoice.PaymentDate" format="dd/MM/yyyy" />
+        </label>
+        <label>
+            <span>CREATED date:</span>
+            <InputDate @bind-Value="newInvoice.CreatedDate" format="dd/MM/yyyy" />
         </label>
     </div>
     <div class="md:w-2/5">
@@ -101,6 +109,7 @@
         newInvoice.StartDate = DateTime.Now;
         newInvoice.EndDate = DateTime.Now;
         newInvoice.PaymentDate = DateTime.Now;
+        newInvoice.CreatedDate = DateTime.Now;
     }
 
     private void AddItem()
