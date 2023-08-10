@@ -59,4 +59,14 @@
     td, th {
         @apply border-t-[1px] border-black p-3 text-left;
     }
+
+    @media print {
+        nav {
+            @apply hidden invisible;
+        }
+
+        .top-margin {
+            @apply mt-0;
+        }
+    }
 }
