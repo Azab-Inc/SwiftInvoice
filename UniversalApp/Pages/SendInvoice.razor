@@ -1,0 +1,96 @@
+﻿@page "/sendinvoice/{InvoiceId:int}"
+
+@using UniversalApp.Models;
+@using UniversalApp.Services;
+@using UniversalApp.Shared.Components;
+
+<div class="flex flex-col text-black">
+    <div class="flex flex-row justify-between">
+        <img class="w-1/3 h-auto object-contain" src="@currentUser.LogoPath" />
+        <div class="w-2/3 flex flex-col text-xl text-right">
+            <span><strong>@currentUser.BusinessName</strong></span>
+            <span>Business Number: @currentUser.BusinessNumber</span>
+            <span>Website: <a class="underline" href="@currentUser.Website" target="_blank">@currentUser.Website</a></span>
+            <span>Email: @currentUser.Email</span>
+            <span>Phone: @currentUser.Phone</span>
+        </div>
+    </div>
+    <div>
+        <p class="text-lg">
+            Client: <strong>@invoice.ClientName</strong>
+            <br />
+            Description: @invoice.JobDescription
+        </p>
+        <hr class="my-3" />
+        <div class="flex flex-row justify-between text-lg">
+            <div class="flex flex-col gap-3 text-left">
+                <span>Start date: @invoice.StartDate.ToString("dd/MM/yyyy")</span>
+                <span>End date: @invoice.EndDate.ToString("dd/MM/yyyy")</span>
+                <span>
+                    Please pay by @invoice.PaymentDate.ToString("dd/MM/yyyy")
+                    to @currentUser.FirstName @currentUser.LastName
+                </span>
+            </div>
+            <div class="flex flex-col gap-3 text-right">
+                <span>Bank Name: @currentUser.BankName</span>
+                <span>Account Number: @currentUser.BankAccNumber</span>
+                <span>Branch Identifier: @currentUser.BranchIdentifier</span>
+            </div>
+        </div>
+    </div>
+    <table class="mt-5">
+        <tr class="text-left">
+            <th>Item</th>
+            <th>Description</th>
+            <th>Cost (@currentUser.Currency)</th>
+        </tr>
+        @foreach (Item item in invoiceItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </table>
+    <div class="flex justify-end mb-5">
+        Total: @total @currentUser.Currency
+    </div>
+    <div class="flex flex-row justify-between">
+        <span>Invoice num: @invoice.InvoiceNum</span>
+        <span>Date of invoice: @invoice.CreatedDate.ToString("dd/MM/yyyy")</span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int InvoiceId { get; set; }
+
+    private InvoiceService invoiceService = new InvoiceService();
+    private Invoice invoice = new Invoice();
+    private List<Item> invoiceItems = new List<Item>();
+
+    private UserService userService = new UserService();
+    private User currentUser = new User();
+
+    private decimal total = 0.0m;
+
+    protected override async Task OnInitializedAsync()
+    {
+        int invoiceId = InvoiceId;
+
+        // Load Invoice
+        invoice = invoiceService.dbGetInvoice(invoiceId);
+
+        if (invoice != null)
+        {
+            // Load Invoice Items
+            invoiceItems = invoiceService.dbGetItems(invoiceId);
+            currentUser = userService.dbGetUser(invoice.UserId);
+
+            foreach(Item item in invoiceItems)
+            {
+                total += item.Price;
+            }
+        }        
+    }   
+}
