@@ -1,0 +1,10 @@
+---
+const { title, id, excerpt } = Astro.props;
+---
+
+<a href={`/posts/${id}`} class="gap-3 rounded-md border-2 p-3">
+  <div>
+    <h3 class="font-bold text-pri">{title}</h3>
+    <p set:html={excerpt} />
+  </div>
+</a>
