@@ -68,7 +68,7 @@
 
     protected override void OnInitialized()
     {
-        currentUser = userService.dbLoadUser();
+        currentUser = userService.dbGetUser(1);
         imageDataUrl = currentUser.LogoPath;
     }
 
