@@ -13,10 +13,10 @@
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
         <!-- Display name -->
-        <ApplicationTitle>UniversalApp</ApplicationTitle>
+        <ApplicationTitle>Swift Invoice</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.universalapp</ApplicationId>
+        <ApplicationId>com.azaber.swiftinvoice</ApplicationId>
         <ApplicationIdGuid>9948823B-76E0-43CE-8F77-15620C84C1DE</ApplicationIdGuid>
 
         <!-- Versions -->
@@ -36,7 +36,7 @@
         <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
         <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
         <GenerateTestArtifacts>True</GenerateTestArtifacts>
-        <AppInstallerUri>C:\Users\coolp\Desktop</AppInstallerUri>
+        <AppInstallerUri>C:\Users\coolp\Desktop\deployment</AppInstallerUri>
         <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     </PropertyGroup>
 
