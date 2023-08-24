@@ -1,27 +1,29 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
 import { baseUrl } from "../helper";
-import Post from "../components/post.astro";
+import Post from "../components/post.tsx";
+import Container from "../components/container.astro";
 
-const response = await fetch(baseUrl + "/posts");
+const response = await fetch(baseUrl + "/posts?categories=1");
 const posts = await response.json();
 ---
 
 <MainLayout pageTitle="Blog">
-  <section>
-    <div class="content">
-      <h1 class="w-full text-left text-3xl">Blog</h1>
-      <div class="flex flex-col gap-3">
-        {
-          posts.map((post) => (
-            <Post
-              title={post.title.rendered}
-              id={post.id}
-              excerpt={post.excerpt.rendered}
-            />
-          ))
-        }
-      </div>
+  <Container>
+    <h1 class="w-full text-left text-3xl">Blog</h1>
+    <div class="flex flex-col gap-3">
+      {
+        posts.map((post) => (
+          <Post
+            title={post.title.rendered}
+            id={post.id}
+            excerpt={post.excerpt.rendered}
+            image={post.x_featured_media_original}
+            type="posts"
+          />
+        ))
+      }
     </div>
-  </section>
+  </Container>
 </MainLayout>
+../components/post.tsx
