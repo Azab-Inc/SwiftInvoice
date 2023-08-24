@@ -1,0 +1,22 @@
+---
+let { direction, id, secondary } = Astro.props;
+
+if (direction == null) {
+  direction = "col";
+}
+
+if (secondary) {
+  secondary = "section-sec";
+} else {
+  secondary = "";
+}
+---
+
+<section class={`${secondary}`}>
+  <div
+    id={`${id}`}
+    class={`content tablet:flex-${direction} flex-col w-[80vw]`}
+  >
+    <slot />
+  </div>
+</section>
