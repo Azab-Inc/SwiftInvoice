@@ -1,15 +1,19 @@
 ---
+import MobileNav from "./mobile-nav";
 ---
 
-<nav class="flex w-full flex-row justify-between bg-pri px-5 py-3 text-white">
-  <div class="font-bold">
+<nav
+  class="fixed left-0 right-0 top-0 z-50 flex w-full flex-row justify-between bg-white px-5 py-3 text-lg text-pri shadow-md"
+>
+  <div class="text-2xl font-bold">
     <a href="/">Swift Invoice</a>
   </div>
-  <div class="flex flex-row gap-3">
+  <div class="none hidden flex-row gap-3 mobile:visible mobile:flex">
     <a href="/blog"><strong>Blog</strong></a>
     <a href="/about">About</a>
     <a href="/getstarted">Get started</a>
     <a href="/support">Support</a>
     <a href="/contact">Contact</a>
   </div>
+  <MobileNav client:load />
 </nav>
