@@ -10,6 +10,6 @@ const page = await response.json();
 <MainLayout pageTitle={page.title.rendered}>
   <Container>
     <h1>{page.title.rendered}</h1>
-    <p set:html={page.content.rendered} />
+    <div class="flex flex-col gap-3" set:html={page.content.rendered} />
   </Container>
 </MainLayout>
