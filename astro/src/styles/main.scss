@@ -4,14 +4,33 @@
 
 @layer components {
   * {
-    @apply scroll-smooth;
+    @apply scroll-smooth duration-300 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-sec;
   }
 
   section {
-    @apply flex min-h-[80vh] flex-col items-center justify-center;
+    @apply relative flex min-h-[80vh] flex-col items-center justify-center;
 
     .content {
-      @apply mx-auto flex h-full w-[80vw] flex-col items-center justify-center gap-3 p-5;
+      @apply z-20 mx-auto flex h-full items-center justify-center gap-3 p-5;
+
+      form {
+        label {
+          @apply mt-3 flex flex-col mobile:flex-row;
+          span {
+            @apply inline-block text-accent mobile:min-w-[30%];
+          }
+          input,
+          textarea {
+            @apply rounded-sm border-b-[1px] border-pri p-1 text-pri;
+          }
+          input {
+            @apply mobile:w-2/3;
+          }
+          textarea {
+            @apply w-full;
+          }
+        }
+      }
 
       h1,
       h2 {
@@ -19,7 +38,7 @@
       }
 
       h1 {
-        @apply text-5xl text-pri;
+        @apply text-3xl text-pri mobile:text-5xl;
       }
 
       p {
