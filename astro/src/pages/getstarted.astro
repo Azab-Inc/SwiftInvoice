@@ -1,7 +1,48 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
+import OsDownload from "../components/os-download.astro";
+import Container from "../components/container.astro";
 ---
 
 <MainLayout pageTitle="Get started">
-    <p>Started</p>
+  <Container>
+    <h1>Get started</h1>
+    <p class="mt-3">
+      We have plans to release on Android, macOS, and iOS in succession,
+      followed by the launch on the Swift Invoice cloud platform.
+    </p>
+    <p class="mb-3">
+      Meanwhile, we are excited to announce the open beta release for Windows 10
+      & 11. We kindly ask for your valuable feedback during this beta phase, as
+      it will greatly contribute to enhancing our application.
+    </p>
+    <a href="https://forms.gle/3iJVL7cVY7iu3DXU9" target="_blank"
+      ><button class="btn btn-sec my-1">Link to Survey</button></a
+    >
+
+    <div class="flex flex-wrap justify-center gap-3">
+      <OsDownload
+        os="windows"
+        title="Windows"
+        color="windows"
+        url="http://swiftinvoice-backend.azaber.com/wp-content/uploads/2023/08/Swift-Invoice-Installer.msix"
+        isReady={true}
+      />
+      <OsDownload os="apple" title="Mac" color="mac" url="" isReady={false} />
+      <OsDownload
+        os="app-store"
+        title="IOS"
+        color="ios"
+        url=""
+        isReady={false}
+      />
+      <OsDownload
+        os="android"
+        title="Android"
+        color="android"
+        url=""
+        isReady={false}
+      />
+    </div>
+  </Container>
 </MainLayout>
