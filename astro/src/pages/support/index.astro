@@ -1,0 +1,16 @@
+---
+import Container from "../../components/container.astro";
+import MainLayout from "../../layouts/main-layout.astro";
+import SupportPage from "./page";
+import { baseUrl } from "../../helper";
+
+const response = await fetch(baseUrl + "/pages/45");
+const page = await response.json();
+---
+
+<MainLayout pageTitle="Support">
+  <Container>
+    <h1>{page.title.rendered}</h1>
+    <div set:html={page.content.rendered} /><SupportPage client:load />
+  </Container>
+</MainLayout>
