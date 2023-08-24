@@ -1,0 +1,39 @@
+---
+import MainLayout from "../../layouts/main-layout.astro";
+import { baseUrl } from "../../helper";
+import Container from "../../components/container.astro";
+
+export async function getStaticPaths() {
+  const response = await fetch(baseUrl + "/posts");
+  const posts = await response.json();
+
+  const postIds = posts.map((post) => String(post.id));
+
+  const paths = postIds.map((id) => ({ params: { id } }));
+
+  return paths;
+}
+
+const { id } = Astro.params;
+
+const response = await fetch(baseUrl + "/posts/" + id);
+const post = await response.json();
+---
+
+<MainLayout pageTitle={post.title.rendered}>
+  <Container class="gap-3 text-left text-pri">
+    <img
+      class="h-auto w-full object-cover mobile:h-[40vh]"
+      src={post.x_featured_media_original}
+      alt={post.title.rendered}
+    />
+    <h1 class="text-3xl font-bold">{post.title.rendered}</h1>
+    <div
+      class="flex flex-col gap-3 text-left text-lg"
+      set:html={post.content.rendered}
+    />
+    <div class="flex w-full">
+      <a href="/blog"><button class="btn btn-sec mr-auto">Back</button></a>
+    </div>
+  </Container>
+</MainLayout>
