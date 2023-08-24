@@ -7,9 +7,13 @@ module.exports = {
         pri: "#1478aa",
         sec: "#03a9f4",
         accent: "#9aa1ab",
+        windows: "#00aff0",
+        mac: "#424242",
+        ios: "#12b6fa",
+        android: "#2edf85",
       },
       screens: {
-        mobile: "480px",
+        mobile: "560px",
 
         tablet: "780px",
 
@@ -17,5 +21,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };
