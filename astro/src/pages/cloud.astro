@@ -1,9 +1,15 @@
 ---
+import Container from "../components/container.astro";
+import { baseUrl } from "../helper";
 import MainLayout from "../layouts/main-layout.astro";
+
+const response = await fetch(baseUrl + "/pages/112");
+const page = await response.json();
 ---
 
-<MainLayout pageTitle="Cloud">
-    <section>
-        <div class="content">Cloud</div>
-    </section>
+<MainLayout pageTitle={page.title.rendered}>
+  <Container>
+    <h1>{page.title.rendered}</h1>
+    <p set:html={page.content.rendered} />
+  </Container>
 </MainLayout>
