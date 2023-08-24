@@ -1,7 +1,49 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
+import { baseUrl } from "../helper";
+import Container from "../components/container.astro";
+
+const response = await fetch(baseUrl + "/pages/40");
+const page = await response.json();
 ---
 
-<MainLayout pageTitle="Contact">
-    <p>Contact</p>
+<MainLayout pageTitle={page.title.rendered}>
+  <Container>
+    <h1>Contact us</h1>
+    <div class="flex flex-col gap-3 tablet:flex-row">
+      <div
+        class="flex w-full flex-col gap-y-3 tablet:w-1/2"
+        set:html={page.content.rendered}
+      />
+      <form
+        action="https://formspree.io/f/mjvqwoja"
+        method="POST"
+        class="full flex flex-col tablet:w-1/3"
+      >
+        <label>
+          <span>First name *:</span>
+          <input type="text" name="fname" required />
+        </label>
+        <label>
+          <span>Last name:</span>
+          <input type="text" name="lname" />
+        </label>
+        <label>
+          <span>Email *:</span>
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          <span>Phone</span>
+          <input type="number" name="phone" />
+        </label>
+        <label>
+          <span>Message *:</span>
+          <br />
+          <textarea name="message" required></textarea>
+        </label>
+        <!-- your other form fields go here -->
+        <button class="btn btn-sec mt-3" type="submit">Send</button>
+      </form>
+    </div>
+  </Container>
 </MainLayout>
