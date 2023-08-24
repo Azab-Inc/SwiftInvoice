@@ -1,16 +1,21 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
+import Container from "../components/container.astro";
 import Logo from "../components/logo.astro";
+import Bg1 from "../components/backgrounds/1.astro";
+import Bg2 from "../components/backgrounds/2.astro";
 ---
 
 <MainLayout pageTitle="Welcome">
-  <section>
-    <div class="content">
+  <Container direction="row">
+    <div class="z-20">
       <div class="flex flex-col items-center justify-center">
         <Logo />
       </div>
       <h2 class="text-2xl text-accent mobile:text-4xl">Invoices made easy</h2>
-      <div class="flex flex-row gap-3">
+      <div
+        class="mt-3 flex flex-col items-center justify-center gap-3 mobile:flex-row"
+      >
         <a href="#seemore"
           ><button class="btn btn-lg btn-sec">See more</button></a
         >
@@ -19,51 +24,56 @@ import Logo from "../components/logo.astro";
         >
       </div>
     </div>
-  </section>
-  <section id="seemore" class="section-sec">
-    <div class="content">
-      <div class="mx-auto flex flex-col tablet:flex-row">
-        <div class="flex w-full flex-col gap-3 tablet:w-1/2">
-          <h1 class="text-3xl">What is Swift Invoice?</h1>
-          <p>
-            Swift Invoice is an outstanding software solution designed to
-            simplify the process of creating invoices. With its user-friendly
-            interface and comprehensive feature set, it ensures a seamless
-            experience for everyone. It is compatible with multiple platforms,
-            making it accessible and convenient for users across various devices
-            and operating systems.
-          </p>
-          <span class="font-bold text-pri">
-            Get more out of Swift Invoice with <a
-              class="underline"
-              href="#cloud">Swift Invoice cloud</a
-            >
-          </span>
-        </div>
-        <img class="w-full tablet:w-1/2" src="/images/home/easy.webp" />
-      </div>
+    <div class="relative z-20">
+      <img
+        src="/images/home/demo.PNG"
+        alt="demo"
+        class="h-96 w-full object-contain shadow-md"
+      />
+      <div class="w-ful absolute left-3 top-3 h-full shadow-md"></div>
     </div>
-  </section>
-  <section>
-    <div id="cloud" class="content">
-      <h1 class="text-3xl">Swift Invoice Cloud</h1>
-      <div class="mx-auto flex flex-col-reverse tablet:flex-row">
-        <img class="w-full tablet:w-1/2" src="/images/home/cloud.webp" />
-        <div class="flex w-full flex-col gap-3 pt-3 tablet:w-1/2">
-          <p>
-            Our cloud service goes beyond simply backing up your profiles and
-            invoices at an affordable price. It offers a multitude of benefits,
-            including the ability to log in from multiple devices and seamlessly
-            access your data. Say goodbye to the hassle of constantly sending
-            files back and forth between your phone and laptop. Our cloud
-            empowers you with the convenience of instant access and effortless
-            synchronization across all your devices.
-          </p>
-          <a href="/cloud" class="mx-auto mobile:mx-0"
-            ><button class="btn btn-pri">See more</button></a
+    <Bg2 />
+  </Container>
+  <Container id="seemore" secondary={true}>
+    <div class="mx-auto flex flex-col tablet:flex-row" data-aos="fade-up">
+      <div class="flex w-full flex-col gap-3 tablet:w-1/2">
+        <h2 class="text-3xl text-pri">What is Swift Invoice?</h2>
+        <p>
+          Swift Invoice is an outstanding software solution designed to simplify
+          the process of creating invoices. With its user-friendly interface and
+          comprehensive feature set, it ensures a seamless experience for
+          everyone. It is compatible with multiple platforms, making it
+          accessible and convenient for users across various devices and
+          operating systems.
+        </p>
+        <span class="font-bold text-pri">
+          Get more out of Swift Invoice with <a class="underline" href="#cloud"
+            >Swift Invoice cloud</a
           >
-        </div>
+        </span>
+      </div>
+      <img class="w-full tablet:w-1/2" src="/images/home/easy.webp" />
+    </div>
+  </Container>
+  <Container id="cloud">
+    <h2 class="text-3xl text-pri">Swift Invoice Cloud</h2>
+    <div class="mx-auto flex flex-col-reverse tablet:flex-row">
+      <img class="w-full tablet:w-1/2" src="/images/home/cloud.webp" />
+      <div class="flex w-full flex-col gap-3 pt-3 tablet:w-1/2">
+        <p>
+          Our cloud service goes beyond simply backing up your profiles and
+          invoices at an affordable price. It offers a multitude of benefits,
+          including the ability to log in from multiple devices and seamlessly
+          access your data. Say goodbye to the hassle of constantly sending
+          files back and forth between your phone and laptop. Our cloud empowers
+          you with the convenience of instant access and effortless
+          synchronization across all your devices.
+        </p>
+        <a href="/cloud" class="mx-auto mobile:mx-0"
+          ><button class="btn btn-pri">See more</button></a
+        >
       </div>
     </div>
-  </section>
+    <Bg1 />
+  </Container>
 </MainLayout>
