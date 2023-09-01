@@ -8,11 +8,13 @@ import Bg2 from "../components/backgrounds/2.astro";
 
 <MainLayout pageTitle="Welcome">
   <Container direction="row">
-    <div class="z-20">
+    <div class="z-20 mobile:w-1/2">
       <div class="flex flex-col items-center justify-center">
         <Logo />
       </div>
-      <h2 class="text-2xl text-accent mobile:text-4xl">Invoices made easy</h2>
+      <h2 class="text-center text-2xl text-accent mobile:text-4xl">
+        Invoices made easy
+      </h2>
       <div
         class="mt-3 flex flex-col items-center justify-center gap-3 mobile:flex-row"
       >
@@ -24,13 +26,12 @@ import Bg2 from "../components/backgrounds/2.astro";
         >
       </div>
     </div>
-    <div class="relative z-20">
+    <div class="z-20 mobile:w-1/2">
       <img
         src="/images/home/demo.webp"
         alt="demo"
-        class="h-96 w-full object-contain shadow-md"
+        class="object-contain mobile:h-2/3 mobile:w-auto"
       />
-      <div class="w-ful absolute left-3 top-3 h-full shadow-md"></div>
     </div>
     <Bg2 />
   </Container>
