@@ -21,20 +21,18 @@
           }
           input,
           textarea {
-            @apply rounded-sm border-b-[1px] border-pri p-1 text-pri;
+            @apply rounded-sm border-[1px] border-slate-400 p-1 text-pri;
           }
-          input {
-            @apply mobile:w-2/3;
-          }
+          input,
           textarea {
-            @apply w-full;
+            @apply mobile:w-2/3;
           }
         }
       }
 
       h1,
       h2 {
-        @apply font-bold;
+        @apply z-20 font-bold;
       }
 
       h1 {
