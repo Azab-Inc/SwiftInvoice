@@ -18,10 +18,10 @@ const MobileNav = (props: Props) => {
         }`}
       >
         <div className="flex flex-col gap-3 text-right font-bold">
+          <a href="/support">Support</a>
           <a href="/blog">Blog</a>
           <a href="/about">About</a>
           <a href="/getstarted">Get started</a>
-          <a href="/support">Support</a>
           <a href="/contact">Contact</a>
         </div>
       </nav>
