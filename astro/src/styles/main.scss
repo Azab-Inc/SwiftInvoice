@@ -40,15 +40,15 @@
       }
 
       p {
-        @apply text-accent;
+        @apply z-20 text-accent;
       }
 
       img {
-        @apply object-contain;
+        @apply z-20 object-contain;
       }
 
       .btn {
-        @apply rounded-md px-3 py-1;
+        @apply z-20 rounded-md px-3 py-1;
       }
 
       .btn-lg {
