@@ -2,6 +2,7 @@
 import MainLayout from "../layouts/main-layout.astro";
 import OsDownload from "../components/os-download.astro";
 import Container from "../components/container.astro";
+import GetStarted from "../components/backgrounds/getstarted.astro";
 ---
 
 <MainLayout pageTitle="Get started">
@@ -26,7 +27,7 @@ import Container from "../components/container.astro";
       ><button class="btn btn-sec my-1">Link to Survey</button></a
     >
 
-    <div class="flex flex-wrap justify-center gap-3">
+    <div class="z-20 flex flex-wrap justify-center gap-3">
       <OsDownload
         os="windows"
         title="Windows"
@@ -50,5 +51,6 @@ import Container from "../components/container.astro";
         isReady={false}
       />
     </div>
+    <GetStarted />
   </Container>
 </MainLayout>
