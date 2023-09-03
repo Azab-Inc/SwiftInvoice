@@ -4,6 +4,7 @@ import Container from "../components/container.astro";
 import Logo from "../components/logo.astro";
 import Bg1 from "../components/backgrounds/1.astro";
 import Bg2 from "../components/backgrounds/2.astro";
+import Bg3 from "../components/backgrounds/hero.astro";
 ---
 
 <MainLayout pageTitle="Welcome">
@@ -33,7 +34,7 @@ import Bg2 from "../components/backgrounds/2.astro";
         class="object-contain mobile:h-2/3 mobile:w-auto"
       />
     </div>
-    <Bg2 />
+    <Bg3 />
   </Container>
   <Container id="seemore" secondary={true}>
     <div class="mx-auto flex flex-col tablet:flex-row" data-aos="fade-up">
