@@ -2,9 +2,8 @@
 import MainLayout from "../layouts/main-layout.astro";
 import Container from "../components/container.astro";
 import Logo from "../components/logo.astro";
-import Bg1 from "../components/backgrounds/1.astro";
-import Bg2 from "../components/backgrounds/2.astro";
-import Bg3 from "../components/backgrounds/hero.astro";
+import BgHero from "../components/backgrounds/home/hero.astro";
+import BgCloud from "../components/backgrounds/home/cloud.astro";
 ---
 
 <MainLayout pageTitle="Welcome">
@@ -34,7 +33,7 @@ import Bg3 from "../components/backgrounds/hero.astro";
         class="object-contain mobile:h-2/3 mobile:w-auto"
       />
     </div>
-    <Bg3 />
+    <BgHero />
   </Container>
   <Container id="seemore" secondary={true}>
     <div class="mx-auto flex flex-col tablet:flex-row" data-aos="fade-up">
@@ -62,7 +61,9 @@ import Bg3 from "../components/backgrounds/hero.astro";
       <h2 class="text-3xl text-pri">Swift Invoice Cloud</h2>
       <div class="mx-auto flex flex-col-reverse tablet:flex-row">
         <img class="w-full tablet:w-1/2" src="/images/home/cloud.webp" />
-        <div class="flex w-full flex-col gap-3 pt-3 tablet:w-1/2">
+        <div
+          class="flex w-full flex-col justify-center gap-3 pt-3 tablet:w-1/2"
+        >
           <p>
             Our cloud service goes beyond simply backing up your profiles and
             invoices at an affordable price. It offers a multitude of benefits,
@@ -78,6 +79,6 @@ import Bg3 from "../components/backgrounds/hero.astro";
         </div>
       </div>
     </div>
-    <Bg1 />
+    <BgCloud />
   </Container>
 </MainLayout>
