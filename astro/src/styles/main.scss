@@ -21,7 +21,7 @@
           }
           input,
           textarea {
-            @apply rounded-sm border-[1px] border-slate-400 p-1 text-pri;
+            @apply rounded-sm border-[1px] border-slate-400 p-1 text-pri focus:border-2 focus:outline-none;
           }
           input,
           textarea {
