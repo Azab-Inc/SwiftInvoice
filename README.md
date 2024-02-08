@@ -13,18 +13,3 @@ and run
 `npx tailwindcss -i input.css -o output.css --watch`
 
 ## TODO
-
-### Users
-
-- Upload business logo
-- Display business logo
-
-### Invoices
-
-- Create invoice form
-- Save invoice
-- Show invoivces
-- Show invoice
-- Edit invoice
-- Delete invoice
-- Export invoice
