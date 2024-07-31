@@ -13,3 +13,8 @@ and run
 `npx tailwindcss -i input.css -o output.css --watch`
 
 ## TODO
+
+- Multiple profiles
+- Multiple clients
+- Export all to CSV.
+- Import all from CSV.
