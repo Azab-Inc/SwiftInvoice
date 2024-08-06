@@ -26,6 +26,8 @@ namespace UniversalApp.Models
 
         public decimal Total { get; set; }
 
+        public int BankAccountId { get; set; }
+
         public int UserId { get; set; }
 
     }
