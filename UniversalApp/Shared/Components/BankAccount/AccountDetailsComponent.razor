@@ -1,0 +1,97 @@
+﻿@using UniversalApp.Models
+@using UniversalApp.Services
+
+
+<div class="p-3 rounded-sm flex flex-col items-center justify-start">
+    @if (editMode == false)
+    {        
+        <div class="p-3 border-y-2 border-accent flex flex-col min-w-full">
+            <span>Bank: @account.BankName @account.Country</span>
+            <span>Account Number: @account.AccountNumber</span>
+            <span>Branch Identifier: @account.BranchIdentifier</span>
+            <span>Paid in @account.Currency</span>
+
+        <div class="flex flex-row gap-x-2 mt-3">
+            <button @onclick:preventDefault="true" @onclick="editAccount" class="btn btn-warn">Edit</button>
+            <button @onclick:preventDefault="true" @onclick="deleteAccount" class="btn btn-danger">Delete</button>
+        </div>
+        </div>
+        @if (showToast)
+        {
+            <ToasterComponent Message="Can't delete, this is still used in some invoices." Type="danger"></ToasterComponent>
+        }
+    }
+    else {
+        <form class="flex flex-col gap-y-1">
+            
+                <div class="flex flex-row gap-x-1">
+                    <label class="w-3/5 text-sm">Account Number: </label>
+                    <input class="w-full" @bind="account.AccountNumber" type="number" />
+                </div>
+                <div class="flex flex-row gap-x-1">
+                    <label class="w-3/5 text-sm">Branch Identifier: </label>
+                    <input class="w-full" @bind="account.BranchIdentifier" type="text" />
+                </div>
+                <div class="flex flex-row gap-x-1">
+                    <label class="w-3/5 text-sm">Bank name: </label>
+                    <input class="w-full" @bind="account.BankName" type="text" />
+                </div>
+                <div class="flex flex-row gap-x-1">
+                    <label class="w-3/5 text-sm">Country: </label>
+                    <input class="w-full" @bind="account.Country" type="text" />
+                </div>
+                <div class="flex flex-row gap-x-1">
+                    <label class="w-3/5 text-sm">Currency: </label>
+                    <input class="w-full" @bind="account.Currency" type="text" />
+                </div>
+            
+            <div class="flex flex-row gap-x-1">
+                <button class="btn btn-pri" @onclick:preventDefault="true" @onclick="saveChanges">Save changes</button>
+            </div>
+        </form>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<BankAccount> UpdateAccounts { get; set; }
+
+
+    [Parameter]
+    public BankAccount account { get; set; }
+
+    [Parameter]
+    public User currentUser { get; set; }
+
+    public BankAccountService bankAccountService = new BankAccountService();
+    private Boolean editMode = false;
+    private Boolean showToast = false;
+
+    void editAccount()
+    {
+        editMode = true;
+    }
+
+    void saveChanges()
+    {
+        bankAccountService.dbEditAccount(account);
+        editMode = false;
+    }
+
+    void deleteAccount()
+    {
+
+
+        if (bankAccountService.canDelete(account, currentUser.UserId))
+        {            
+            bankAccountService.dbRemoveAccount(account);
+            UpdateAccounts.InvokeAsync(account);
+        }
+        else
+        {
+            showToast = true;
+        }
+        
+    }
+}

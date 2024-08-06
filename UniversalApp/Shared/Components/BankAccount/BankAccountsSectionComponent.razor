@@ -1,0 +1,75 @@
+﻿@using UniversalApp.Models
+@using UniversalApp.Services
+@using UniversalApp.Shared.Components
+@using UniversalApp.Shared.Components.BankAccount
+@using BlazorInputFile
+
+
+
+<div class="border-y-2 border-accent p-3 rounded-sm">
+    <h2 class="font-semibold text-3xl">Bank Accounts</h2>
+    @if (accounts.Count == 0 || accounts == null) {
+        <span>No Accounts</span>
+    }
+    
+
+    @foreach (BankAccount account in accounts) {
+        
+        <AccountDetailsComponent currentUser="currentUser" account="account" UpdateAccounts="@GetAccounts"></AccountDetailsComponent>
+    }
+
+    <form class="mx-auto my-3 flex flex-col flex-col gap-3">
+        <label>
+            <span>Bank Name</span>
+            <input @bind="newAccount.BankName" type="text" name="bank-name"  />
+        </label>
+        <label>
+            <span>Currency</span>
+            <input @bind="newAccount.Currency" type="text" name="bank-name" />
+        </label>
+        <label>
+            <span>Account Number</span>
+            <input @bind="newAccount.AccountNumber" type="number" name="acc-number" />       
+        </label>
+        <label>
+            <span>Branch Identifier</span>
+            <input @bind="newAccount.BranchIdentifier" type="text" name="branch-identifier" />
+        </label>
+        <label>
+            <span>Country</span>
+            <input @bind="newAccount.Country" type="text" name="country" />
+        </label>
+
+        <div class="mt-3">
+            <button class="btn btn-sec" @onclick:preventDefault="true" @onclick="AddAccount">Add account</button>
+        </div>
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public User currentUser { get; set; }
+
+    public BankAccount newAccount = new BankAccount();
+    public List<BankAccount> accounts = new List<BankAccount>();
+    public BankAccountService bankAccountService = new BankAccountService();
+
+    protected override void OnInitialized()
+    {
+        GetAccounts();
+    }
+
+    public void GetAccounts()
+    {
+        accounts = bankAccountService.dbGetAccounts();
+    }
+
+    void AddAccount()
+    {        
+        bankAccountService.dbAddAcount(newAccount, currentUser);
+        newAccount = new BankAccount();
+        GetAccounts();
+    }
+
+
+}
