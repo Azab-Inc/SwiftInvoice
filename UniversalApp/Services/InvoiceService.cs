@@ -17,6 +17,7 @@ namespace UniversalApp.Services
             {
                 using (var connection = dbService.GetConnection())
                 {
+                    
                     // Add invoice
                     connection.Insert(invoice);
 
@@ -53,15 +54,7 @@ namespace UniversalApp.Services
                     if (existingInvoice != null)
                     {
                         // Update invoice details
-                        existingInvoice.InvoiceNum = invoice.InvoiceNum;
-                        existingInvoice.ClientName = invoice.ClientName;
-                        existingInvoice.JobName = invoice.JobName;
-                        existingInvoice.JobDescription = invoice.JobDescription;
-                        existingInvoice.StartDate = invoice.StartDate;
-                        existingInvoice.EndDate = invoice.EndDate;
-                        existingInvoice.PaymentDate = invoice.PaymentDate;
-                        existingInvoice.CreatedDate = invoice.CreatedDate;
-                        existingInvoice.Total = invoice.Total;
+                        existingInvoice = invoice;
 
                         // Update the invoice in the database
                         connection.Update(existingInvoice);
