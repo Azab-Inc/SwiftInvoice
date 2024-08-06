@@ -6,6 +6,7 @@ namespace UniversalApp.Services
     public class BankAccountService
     {
         private DbService dbService = new DbService();
+        private InvoiceService invoiceService = new InvoiceService();
 
         public BankAccountService() 
         { 
@@ -91,6 +92,21 @@ namespace UniversalApp.Services
             {
                 Debug.WriteLine(ex); 
             }
+        }
+
+        public Boolean canDelete(BankAccount account, int userId) 
+        {
+            dbService.RunQuery();
+
+            List<Invoice> invoies = invoiceService.dbGetInvoices(userId);
+
+            foreach (Invoice invoice in invoies) {
+                if (invoice.BankAccountId == account.AccountId) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void dbRemoveAccount(BankAccount account)
