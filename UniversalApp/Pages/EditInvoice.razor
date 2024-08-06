@@ -10,45 +10,60 @@
 
 @if (invoice != null)
 {
-    <form class="edit-invoice mx-auto my-3 flex md:flex-wrap md:flex-row flex-col gap-3">
-        <div class="md:w-2/5">
-            <label>
-                <span>Invoice num:</span>
-                <input @bind="invoice.InvoiceNum" name="invoice-num" type="text" />
-            </label>
-            <label>
-                <span>Client name:</span>
-                <input @bind="invoice.ClientName" name="client-name" type="text" />
-            </label>
-            <label>
-                <span>Job name:</span>
-                <input @bind="invoice.JobName" name="job-name" type="text" />
-            </label>
-            <hr />
-            <label>
-                <span>START date:</span>
-                <InputDate @bind-Value="invoice.StartDate" format="dd/MM/yyyy" />
-            </label>
-            <label>
-                <span>END date:</span>
-                <InputDate @bind-Value="invoice.EndDate" format="dd/MM/yyyy" />
-            </label>
-            <label>
-                <span>PAYMENT date:</span>
-                <InputDate @bind-Value="invoice.PaymentDate" format="dd/MM/yyyy" />
-            </label>
-            <label>
-                <span>CREATED date:</span>
-                <InputDate @bind-Value="invoice.CreatedDate" format="dd/MM/yyyy" />
-            </label>
+    <form class="edit-invoice mx-auto my-3 flex flex-col gap-3">
+        <div class="w-full flex flex-row gap-x-3">
+            <div class="md:w-2/5">
+                <label>
+                    <span>Invoice num:</span>
+                    <input @bind="invoice.InvoiceNum" name="invoice-num" type="text" />
+                </label>
+                <label>
+                    <span>Client name:</span>
+                    <input @bind="invoice.ClientName" name="client-name" type="text" />
+                </label>
+                <label>
+                    <span>Job name:</span>
+                    <input @bind="invoice.JobName" name="job-name" type="text" />
+                </label>
+                <hr />
+                <label>
+                    <span>START date:</span>
+                    <InputDate @bind-Value="invoice.StartDate" format="dd/MM/yyyy" />
+                </label>
+                <label>
+                    <span>END date:</span>
+                    <InputDate @bind-Value="invoice.EndDate" format="dd/MM/yyyy" />
+                </label>
+                <label>
+                    <span>PAYMENT date:</span>
+                    <InputDate @bind-Value="invoice.PaymentDate" format="dd/MM/yyyy" />
+                </label>
+                <label>
+                    <span>CREATED date:</span>
+                    <InputDate @bind-Value="invoice.CreatedDate" format="dd/MM/yyyy" />
+                </label>
+            </div>
+            <div class="md:w-2/5">
+                <label class="flex flex-col">
+                    <span>Job Description: </span>
+                    <textarea @bind="invoice.JobDescription" name="job-description" rows="10" cols="25"></textarea>
+                </label>
+            </div>
+</div>
+        
+        <div>
+            <h2>
+                Current account payable
+            </h2>
+            <span>@currentAccount.BankName</span>           
+            <select name="bank-account" @bind="@selectedAccount.AccountId">
+                @foreach (BankAccount bankAccount in bankAccounts)
+                {
+                    <option value="@bankAccount.AccountId">@bankAccount.BankName</option>
+                }
+            </select>
         </div>
-        <div class="md:w-2/5">
-            <label class="flex flex-col">
-                <span>Job Description: </span>
-                <textarea @bind="invoice.JobDescription" name="job-description" rows="10" cols="25"></textarea>
-            </label>
-        </div>
-        <hr />
+
         <div>
             <!-- Display Invoice Items for Editing -->
             @foreach (var item in invoiceItems)
@@ -120,6 +135,11 @@ else
     private Invoice invoice = new Invoice();
     private List<Item> invoiceItems = new List<Item>();
 
+    private BankAccountService bankAccountService = new BankAccountService();
+    private List<BankAccount> bankAccounts = new List<BankAccount>();
+    private BankAccount currentAccount = new BankAccount();
+    private BankAccount selectedAccount = new BankAccount();
+
     private bool savedChanges = false;
     private bool deleteInvoice = false;
     private bool confirmSave = false;
@@ -135,6 +155,8 @@ else
         {
             // Load Invoice Items
             invoiceItems = invoiceService.dbGetItems(invoiceId);
+            bankAccounts = bankAccountService.dbGetAccounts();
+            currentAccount = bankAccountService.dbGetAccount(invoice.BankAccountId);
         }
     }
 
@@ -168,6 +190,7 @@ else
 
     public void ConfirmSaveChanges()
     {
+        invoice.BankAccountId = selectedAccount.AccountId;
         invoiceService.dbEditInvoice(invoice, invoiceItems);
         savedChanges = true;
         confirmSave = false;
