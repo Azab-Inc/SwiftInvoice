@@ -49,7 +49,7 @@
     <hr />
     <div>
         <!-- Items section -->
-        @foreach (var item in invoiceItems)
+        @foreach (Item item in invoiceItems)
         {
             <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md mt-3 mx-auto">
                 <div class="w-full flex md:flex-row flex-col gap-3">
@@ -72,6 +72,23 @@
             </div>
         }
 
+        <div>
+            @if (bankAccounts.Count > 0)
+            {                
+                <h2>Account Payable</h2>
+                <select name="bank-account" @bind="@selectedAccount.AccountId">                
+                    @foreach (BankAccount bankAccount in bankAccounts)
+                    {
+                        <option value="@bankAccount.AccountId">@bankAccount.BankName</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <h2>No bank accounts found, please add one.</h2>
+            }
+        </div>
+
         <div class="mt-3">
             <button class="btn btn-sec" @onclick:preventDefault="true" @onclick="AddItem">Add item</button>
         </div>
@@ -91,6 +108,12 @@
         <ToasterComponent Message="Invoice created!" Type="success" Redirect="true" Location="invoices" Url="showall" />
     </div>
 }
+@if (accountNotSelected)
+{
+    <div class="mt-3">
+        <ToasterComponent Message="No bank account selected, please select or make one." Type="danger" Redirect="true" Location="Mange user" Url="user" />
+    </div>
+}
 
 
 @code {
@@ -100,11 +123,18 @@
 
     private UserService userService = new UserService();
     private User currentUser = new User();
+
     private bool createdInvoice = false;
+    private bool accountNotSelected = false;
+
+    private BankAccountService bankAccountService = new BankAccountService();
+    private List<BankAccount> bankAccounts = new List<BankAccount>();
+    private BankAccount selectedAccount = new BankAccount();
 
     protected override void OnInitialized()
     {
         currentUser = userService.dbLoadUser();
+        bankAccounts = bankAccountService.dbGetAccounts();
         newInvoice.UserId = currentUser.UserId;
         newInvoice.StartDate = DateTime.Now;
         newInvoice.EndDate = DateTime.Now;
@@ -124,8 +154,28 @@
 
     private void SaveInvoice()
     {
+
         newInvoice.UserId = currentUser.UserId;
-        invoiceService.dbCreateInvoice(newInvoice, invoiceItems);
-        createdInvoice = true;
+
+        try
+        {
+            if (bankAccountService.dbGetAccount(selectedAccount.AccountId) != null)
+            {
+                newInvoice.BankAccountId = selectedAccount.AccountId;
+                invoiceService.dbCreateInvoice(newInvoice, invoiceItems);
+                accountNotSelected = false;
+                createdInvoice = true;                
+            }
+            else
+            {
+                accountNotSelected = true;
+            }
+        }
+        catch
+        {
+            
+        }
+
+
     }
 }
