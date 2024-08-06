@@ -10,6 +10,7 @@ namespace UniversalApp.Services
         public DbService()
         {         
             
+            GetConnection().CreateTable<BankAccount>();
             GetConnection().CreateTable<User>();
             GetConnection().CreateTable<Invoice>();
             GetConnection().CreateTable<Item>();

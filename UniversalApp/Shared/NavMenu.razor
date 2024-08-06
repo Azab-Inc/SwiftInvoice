@@ -9,7 +9,7 @@
         </h1>
     </a>
     <a href="/user">Manage Profile</a>
-    <a href="/showall">All Invoices</a>
+    <a href="/showall">Invoices</a>    
     <a href="/support">Support</a>
     <button class="btn-danger mt-auto py-3 font-bold text-white" @onclick="closeApp">Quit</button>
 </nav>
@@ -22,7 +22,7 @@
 
     <div class="flex flex-col justify-center items-center text-5xl font-bold gap-3 text-white h-full text-center">
         <a @onclick="toggleMenu" href="/user">Manage Profile</a>
-        <a @onclick="toggleMenu" href="/showall">All Invoices</a>
+        <a @onclick="toggleMenu" href="/showall">Invoices</a>        
         <a @onclick="toggleMenu" href="/support">Support</a>
         <a class="hover:text-red-500" @onclick="closeApp">Quit</a>
     </div>

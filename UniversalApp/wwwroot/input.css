@@ -40,7 +40,7 @@
         @apply bg-danger;
     }
 
-    form label input, form label textarea {
+    form label input, form input, form label textarea {
         @apply border-2 focus:border-4 border-pri p-3 w-full;
     }
 
@@ -58,6 +58,10 @@
 
     td, th {
         @apply border-t-[1px] border-black p-3 text-left;
+    }
+
+    .account-details-table td, .account-details-table th {
+        @apply border-[1px] border-accent p-3;
     }
 
     @media print {

@@ -32,9 +32,9 @@
                 </span>
             </div>
             <div class="flex flex-col gap-3 text-right">
-                <span>Bank Name: @currentUser.BankName</span>
-                <span>Account Number: @currentUser.BankAccNumber</span>
-                <span>Branch Identifier: @currentUser.BranchIdentifier</span>
+                <span>Bank Name: @bankAccount.BankName @bankAccount.Country</span>
+                <span>Account Number: @bankAccount.AccountNumber</span>
+                <span>Branch Identifier: @bankAccount.BranchIdentifier</span>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
         <tr class="text-left">
             <th>Item</th>
             <th>Description</th>
-            <th>Cost (@currentUser.Currency)</th>
+            <th>Cost (@bankAccount.Currency)</th>
         </tr>
         @foreach (Item item in invoiceItems)
         {
@@ -54,7 +54,7 @@
         }
     </table>
     <div class="flex justify-end mb-5">
-        Total: @total @currentUser.Currency
+        Total: @total @bankAccount.Currency
     </div>
     <div class="flex flex-row justify-between">
         <span>Invoice num: @invoice.InvoiceNum</span>
@@ -71,6 +71,9 @@
 
     private UserService userService = new UserService();
     private User currentUser = new User();
+
+    private BankAccountService bankAccountService = new BankAccountService();
+    private BankAccount bankAccount = new BankAccount();
 
     private decimal total = 0.0m;
 
@@ -91,6 +94,8 @@
             {
                 total += item.Price;
             }
+
+            bankAccount = bankAccountService.dbGetAccount(invoice.BankAccountId);
         }        
     }   
 }

@@ -14,7 +14,9 @@ and run
 
 ## TODO
 
-- Multiple profiles
-- Multiple clients
+- Multiple profiles.
+- Multiple bank accounts and currencies.
+- Auto SKU.
+- Multiple clients.
 - Export all to CSV.
 - Import all from CSV.
