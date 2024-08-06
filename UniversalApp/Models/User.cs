@@ -16,13 +16,11 @@ namespace UniversalApp.Models
 
         public string BusinessName { get; set; }
         public string Email { get; set; }
-        public string BankAccNumber { get; set; }
-        public string BranchIdentifier { get; set; }
-        public string BankName { get; set; }
 
-        public string Currency { get; set; }
         public string LogoPath { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
+
+     
     }
 }
