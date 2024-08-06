@@ -5,6 +5,10 @@
 @using UniversalApp.Services
 @using System.Diagnostics
 @using BlazorInputFile
+@using UniversalApp.Shared.Components
+@using UniversalApp.Shared.Components.BankAccount
+
+
 
 <h1 class="page-heading">Manage User</h1>
 
@@ -36,22 +40,10 @@
             <span>Email:</span>
             <input @bind="currentUser.Email" name="email" type="email" />
         </label>
-        <label>
-            <span>Currency: </span>
-            <input @bind="currentUser.Currency" name="currency" type="text" />
-        </label>
-        <label>
-            <span>Bank Name:</span>
-            <input @bind="currentUser.BankName" name="bankName" type="text" />
-        </label>
-        <label>
-            <span>Bank Acc Number:</span>
-            <input @bind="currentUser.BankAccNumber" name="bankAccNum" type="text" />
-        </label>
-        <label>
-            <span>Branch Identifier:</span>
-            <input @bind="currentUser.BranchIdentifier" name="branchIdentifier" type="text" />
-        </label>
+        
+        <BankAccountsSectionComponent currentUser="currentUser"></BankAccountsSectionComponent>
+
+
     </div>
     <div class="flex flex-col gap-3 pl-1">
         <span class="text-accent text-2xl font-bold mt-3 mb-[-1rem]">Optional</span>
@@ -72,6 +64,7 @@
 @code {
     private User currentUser = new User();
     private UserService userService = new UserService();
+    
     private string imageDataUrl;
 
     protected override void OnInitialized()
