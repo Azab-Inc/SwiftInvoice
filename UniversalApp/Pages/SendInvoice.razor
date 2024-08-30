@@ -96,6 +96,10 @@
             }
 
             bankAccount = bankAccountService.dbGetAccount(invoice.BankAccountId);
+            if (bankAccount == null)
+            {
+                bankAccount = bankAccountService.dbGetAccounts()[0];
+            }
         }        
     }   
 }

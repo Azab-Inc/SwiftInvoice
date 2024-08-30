@@ -144,7 +144,7 @@ else
     private bool deleteInvoice = false;
     private bool confirmSave = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         int invoiceId = InvoiceId;
 
@@ -157,6 +157,9 @@ else
             invoiceItems = invoiceService.dbGetItems(invoiceId);
             bankAccounts = bankAccountService.dbGetAccounts();
             currentAccount = bankAccountService.dbGetAccount(invoice.BankAccountId);
+            if (currentAccount == null) {
+                currentAccount = bankAccounts[0];
+            }
         }
     }
 
