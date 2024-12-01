@@ -8,6 +8,8 @@ namespace UniversalApp.Models
         [PrimaryKey, AutoIncrement]
         public int InvoiceId { get; set; }
 
+        public int skuTypeId { get; set; }
+
         public string ClientName { get; set; }
 
         public string JobName { get; set; }

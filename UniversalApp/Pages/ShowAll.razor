@@ -1,4 +1,5 @@
 ﻿@page "/showall"
+@using UniversalApp.DTOs;
 @using UniversalApp.Models;
 @using UniversalApp.Services;
 
@@ -7,7 +8,7 @@
 <a href="/newinvoice"><button class="btn-pri ml-auto">New invoice</button></a>
 
 <div class="flex flex-row flex-wrap gap-3 items-center justify-center my-3">
-    @foreach (Invoice invoice in invoices)
+    @foreach (InvoicePreviewDTO invoice in invoices)
     {
         <div class="flex flex-col p-3 border-2 border-pri max-w-[100%] min-w-[50%] sm:min-w-[33%] sm:max-w-[100%]">
             <h2 class="text-2xl font-bold">@invoice.JobName</h2>
@@ -26,12 +27,13 @@
 @code {
     private InvoiceService invoiceService = new InvoiceService();
     private UserService userService = new UserService();
-    private List<Invoice> invoices = new List<Invoice>();
+    private List<InvoicePreviewDTO> invoices = new List<InvoicePreviewDTO>();
     private User currentUser = new User();
 
     protected override void OnInitialized()
     {
         currentUser = userService.dbLoadUser();
-        invoices = invoiceService.dbGetInvoices(currentUser.UserId);
+        invoices = invoiceService.dbGetInvoicePreviews(currentUser.UserId);
+        Console.WriteLine("invoices", invoices);
     }
 }

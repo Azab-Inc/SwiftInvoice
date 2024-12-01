@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics;
+using UniversalApp.DTOs;
 using UniversalApp.Models;
 
 namespace UniversalApp.Services
@@ -8,6 +9,10 @@ namespace UniversalApp.Services
     {
         private DbService dbService = new DbService();
         public InvoiceService() { }
+
+        public int dbGetInvoiceCount(int userId) {
+            return dbGetInvoices(userId).Count();
+        }
 
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
         {
@@ -76,8 +81,6 @@ namespace UniversalApp.Services
                 Debug.WriteLine(ex);
             }
         }
-
-
 
         public Invoice dbGetInvoice(int invoiceId)
         {
@@ -158,6 +161,36 @@ namespace UniversalApp.Services
 
             return null;
         }
+
+        public List<InvoicePreviewDTO> dbGetInvoicePreviews(int userId)
+        {
+            dbService.RunQuery();
+
+            try
+            {
+                using (var connection = dbService.GetConnection())
+                {
+                    var invoicePreviews = connection.Table<Invoice>()
+                        .Where(i => i.UserId == userId)
+                        .Select(i => new InvoicePreviewDTO(
+                            i.InvoiceId,
+                            i.skuTypeId,
+                            i.ClientName,
+                            i.JobName,
+                            i.InvoiceNum
+                        )).ToList();
+
+                    return invoicePreviews;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return null;
+        }
+
 
         public void dbDeleteInvoice(int invoiceId)
         {
