@@ -33,7 +33,6 @@
     protected override void OnInitialized()
     {
         currentUser = userService.dbLoadUser();
-        invoices = invoiceService.dbGetInvoicePreviews(currentUser.UserId);
-        Console.WriteLine("invoices", invoices);
+        invoices = invoiceService.dbGetInvoicePreviews(currentUser.UserId);        
     }
 }
