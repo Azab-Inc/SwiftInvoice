@@ -12,11 +12,6 @@ and run
 
 `npx tailwindcss -i input.css -o output.css --watch`
 
-## TODO
+or
 
-- Multiple profiles.
-- Multiple bank accounts and currencies.
-- Auto SKU.
-- Multiple clients.
-- Export all to CSV.
-- Import all from CSV.
+runTailwind.sh
