@@ -98,7 +98,7 @@ namespace UniversalApp.Services
         {
             dbService.RunQuery();
 
-            List<Invoice> invoies = invoiceService.dbGetInvoices(userId);
+            List<Invoice> invoies = invoiceService.dbGetMany(userId, invoiceService.dbGetCount(userId), 0);
 
             foreach (Invoice invoice in invoies) {
                 if (invoice.BankAccountId == account.AccountId) {
