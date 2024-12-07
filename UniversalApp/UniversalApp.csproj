@@ -7,6 +7,7 @@
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
         <RootNamespace>UniversalApp</RootNamespace>
+      <Nullable>enable</Nullable>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -81,8 +82,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="Pages\ClientPages\Create.razor" />
+      <Content Remove="Pages\ClientPages\Edit.razor" />
+      <Content Remove="Pages\Clients.razor" />
       <Content Remove="Pages\EditInvoice.razor" />
       <Content Remove="Pages\SendInvoice.razor" />
+      <Content Remove="Pages\SKUs.razor" />
       <Content Remove="Shared\Components\AccountDetailsComponent.razor" />
       <Content Remove="Shared\Components\BankAccountsSectionComponent.razor" />
       <Content Remove="Shared\Components\SurveyComponent.razor" />
