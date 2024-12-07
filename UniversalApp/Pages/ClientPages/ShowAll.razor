@@ -1,12 +1,82 @@
 ﻿@page "/clients"
 
 @using UniversalApp.Models;
+@using UniversalApp.DTOs;
 @using UniversalApp.Services;
-@using UniversalApp.Shared.Components;
 
+<h1 class="page-heading">All Clients</h1>
 
-<h3>Clients</h3>
+<a href="/clients/create"><button class="btn-pri ml-auto">Add Client</button></a>
+<div class="my-3 flex flex-col sm:flex-row gap-1">
+    <input type="text" @bind="searchTerm" placeholder="Search clients..." class="form-control"  />
+    <a><button @onclick="() => OnSearch()" class="btn-pri ml-auto">Search</button></a>
+</div>
+
+<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-3 mx-auto">
+    @if (clients != null && clients.Any())
+    {
+        @foreach (var client in clients)
+        {
+            <div class="border-2 border-pri p-3">
+                <h3>@client.FirstName @client.LastName</h3>
+                <p>Email: @client.Email</p>
+                <p>Phone: @client.Phone</p>
+                <p>Invoices: @client.Invoices</p>
+
+                @if (!string.IsNullOrEmpty(client.ProfileImg))
+                {
+                    <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(File.ReadAllBytes(client.ProfileImg))}")"
+                         alt="Profile Image" class="w-full object-contain" />
+                }
+                else
+                {
+                    <p>No profile image available.</p>
+                }
+
+                <a href="/clients/edit/@client.Id">
+                    <button class="btn btn-pri">Manage Client</button>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No clients found.</p>
+    }
+</div>
+
 
 @code {
+    private ClientService clientService = new ClientService();
+    private UserService userService = new UserService();
+    private List<ClientPreviewDTO> clients = new List<ClientPreviewDTO>();
+    private User currentUser = new User();
+    private string searchTerm = string.Empty;
 
+
+    protected override void OnInitialized()
+    {
+        currentUser = userService.dbLoadUser();
+
+        clients = clientService.dbGetManyDTO(currentUser.UserId, 20, 0, client =>
+        {
+
+            int numInvoices = GetNumberOfInvoicesForClient(client.Id);
+            return ClientMapper.MapClientToDTO(client, numInvoices);
+        });
+    }
+
+    private void OnSearch()
+    {
+        clients = clientService.dbSearch(currentUser.UserId, searchTerm, client =>
+        {
+            int numInvoices = GetNumberOfInvoicesForClient(client.Id);
+            return ClientMapper.MapClientToDTO(client, numInvoices);
+        });
+    }
+
+    private int GetNumberOfInvoicesForClient(int clientId)
+    {
+        return 5; // Just a placeholder, adjust according to your actual logic
+    }
 }

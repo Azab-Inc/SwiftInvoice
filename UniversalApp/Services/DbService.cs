@@ -14,6 +14,8 @@ namespace UniversalApp.Services
             GetConnection().CreateTable<User>();
             GetConnection().CreateTable<Invoice>();
             GetConnection().CreateTable<Item>();
+            GetConnection().CreateTable<Client>();
+            GetConnection().CreateTable<SKU>();
             RunQuery();
         }
 

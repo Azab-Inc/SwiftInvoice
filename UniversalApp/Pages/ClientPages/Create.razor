@@ -1,0 +1,126 @@
+﻿@page "/clients/create"
+
+@using UniversalApp.Models;
+@using UniversalApp.DTOs;
+@using UniversalApp.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+
+<h1 class="page-heading">New Client</h1>
+
+<EditForm Model="newClient" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="flex flex-col md:flex-row sm:gap-x-2">
+        <div class="w-full sm:w-1/2">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <InputText id="firstName" class="form-control" @bind-Value="newClient.FirstName" />
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <InputText id="lastName" class="form-control" @bind-Value="newClient.LastName" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="newClient.Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <InputText id="phone" class="form-control" @bind-Value="newClient.Phone" />
+            </div>
+        </div>
+
+        <div class="w-full sm:w-1/2">
+            <div class="form-group">
+                <label for="profileImg">Profile Image</label>
+                <InputFile id="profileImg" class="form-control" OnChange="HandleFileUpload" />
+            </div>
+
+            <div class="form-group">
+                <label for="businessNumber">Business Number</label>
+                <InputText id="businessNumber" class="form-control" @bind-Value="newClient.BusinessNumber" />
+            </div>
+
+            <div class="form-group">
+                <label for="businessName">Business Name</label>
+                <InputText id="businessName" class="form-control" @bind-Value="newClient.BusinessName" />
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website</label>
+                <InputText id="website" class="form-control" @bind-Value="newClient.Website" />
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="mx-auto btn-suc text-xl px-4 py-2" disabled="@(newClient == null)">Create</button>
+
+    @if (success)
+    {
+        <ToasterComponent Message="Client created!" Type="success" Redirect="true" Location="clients" Url="clients" />
+    }
+</EditForm>
+
+@code {
+    private Client newClient = new Client();
+    private string uploadedFilePath = string.Empty;
+    private UserService userService = new UserService();
+    private User currentUser = new User();
+    private bool success = false;
+    private IBrowserFile uploadedFile;
+
+    protected override void OnInitialized()
+    {
+        currentUser = userService.dbLoadUser();
+    }
+
+    private void HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        // Save the file temporarily when it's selected
+        uploadedFile = e.File;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Ensure file is uploaded before processing
+        if (uploadedFile != null)
+        {
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            var safeFirstName = string.IsNullOrEmpty(newClient.FirstName) ? "Unknown" : newClient.FirstName.Replace(" ", "_");
+            var safeLastName = string.IsNullOrEmpty(newClient.LastName) ? "Unknown" : newClient.LastName.Replace(" ", "_");
+
+            var newFileName = $"{timestamp}_{safeFirstName}_{safeLastName}_{newClient.Id}{Path.GetExtension(uploadedFile.Name)}";
+
+            var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwiftInvoice", "ClientProfiles");
+            
+            
+            Directory.CreateDirectory(folderPath);
+
+            var filePath = Path.Combine(folderPath, newFileName);
+            uploadedFilePath = filePath;
+
+        
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await uploadedFile.OpenReadStream().CopyToAsync(fileStream);
+            }
+
+        
+            newClient.ProfileImg = uploadedFilePath;
+        }
+        else
+        {
+        
+            return;
+        }
+
+        // Now create the client in the database
+        ClientService clientService = new ClientService();
+        clientService.dbCreate(currentUser.UserId, newClient);
+        success = true;
+    }
+}
