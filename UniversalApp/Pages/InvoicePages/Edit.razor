@@ -140,6 +140,11 @@ else
     private BankAccount currentAccount = new BankAccount();
     private BankAccount selectedAccount = new BankAccount();
 
+    private User currentUser = new User();
+    private UserService userService = new UserService();
+
+
+
     private bool savedChanges = false;
     private bool deleteInvoice = false;
     private bool confirmSave = false;
@@ -147,9 +152,9 @@ else
     protected override void OnInitialized()
     {
         int invoiceId = InvoiceId;
-
-        // Load Invoice
-        invoice = invoiceService.dbGetInvoice(invoiceId);
+        currentUser = userService.dbLoadUser();
+        
+        invoice = invoiceService.dbGetSingle(currentUser.UserId, invoiceId);
 
         if (invoice != null)
         {
@@ -187,7 +192,7 @@ else
 
     public void ConfirmDeleteInvoice()
     {
-        invoiceService.dbDeleteInvoice(invoice.InvoiceId);
+        invoiceService.dbDeleteInvoice(invoice.Id);
         NavigationManager.NavigateTo("showall");
     }
 

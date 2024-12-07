@@ -3,14 +3,17 @@
 namespace UniversalApp.Models
 {
     [Table("invoices")]
-    public class Invoice
-    {
+    public class Invoice : IHasUserId 
+    {      
+
         [PrimaryKey, AutoIncrement]
-        public int InvoiceId { get; set; }
+        public int Id { get; set; }
 
         public int skuTypeId { get; set; }
 
         public string ClientName { get; set; }
+
+        public int ClientId { get; set; }
 
         public string JobName { get; set; }
 

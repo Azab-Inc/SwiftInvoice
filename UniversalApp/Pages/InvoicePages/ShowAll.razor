@@ -7,10 +7,10 @@
 
 <a href="/newinvoice"><button class="btn-pri ml-auto">New invoice</button></a>
 
-<div class="flex flex-row flex-wrap gap-3 items-center justify-center my-3">
+<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-3">
     @foreach (InvoicePreviewDTO invoice in invoices)
     {
-        <div class="flex flex-col p-3 border-2 border-pri max-w-[100%] min-w-[50%] sm:min-w-[33%] sm:max-w-[100%]">
+        <div class="flex flex-col p-3 border-2 border-pri">
             <h2 class="text-2xl font-bold">@invoice.JobName</h2>
             <h3>For <strong>@invoice.ClientName</strong></h3>
             <span class="mt-3">@invoice.InvoiceNum</span>

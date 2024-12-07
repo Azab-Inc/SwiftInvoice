@@ -5,14 +5,12 @@ using UniversalApp.Models;
 
 namespace UniversalApp.Services
 {
-    public class InvoiceService
+    public class InvoiceService : GenericService<Invoice, InvoicePreviewDTO>
     {
         private DbService dbService = new DbService();
         public InvoiceService() { }
 
-        public int dbGetInvoiceCount(int userId) {
-            return dbGetInvoices(userId).Count();
-        }
+
 
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
         {
@@ -27,7 +25,7 @@ namespace UniversalApp.Services
                     connection.Insert(invoice);
 
                     // Get newest invoice id
-                    int newInvoiceId = connection.Table<Invoice>().OrderByDescending(i => i.InvoiceId).First().InvoiceId;
+                    int newInvoiceId = connection.Table<Invoice>().OrderByDescending(i => i.Id).First().Id;
 
                     // Add invoice items with the new invoice id
                     foreach (var item in items)
@@ -54,7 +52,7 @@ namespace UniversalApp.Services
                 using (var connection = dbService.GetConnection())
                 {
                     // Retrieve existing invoice by its ID
-                    var existingInvoice = connection.Table<Invoice>().FirstOrDefault(i => i.InvoiceId == invoice.InvoiceId);
+                    var existingInvoice = connection.Table<Invoice>().FirstOrDefault(i => i.Id == invoice.Id);
 
                     if (existingInvoice != null)
                     {
@@ -65,12 +63,12 @@ namespace UniversalApp.Services
                         connection.Update(existingInvoice);
 
                         // Delete existing items associated with the invoice
-                        dbDeleteItems(existingInvoice.InvoiceId);
+                        dbDeleteItems(existingInvoice.Id);
 
                         // Add the new items with the updated invoice id
                         foreach (var newItem in items)
                         {
-                            newItem.InvoiceId = existingInvoice.InvoiceId;
+                            newItem.InvoiceId = existingInvoice.Id;
                             connection.Insert(newItem);
                         }
                     }
@@ -80,27 +78,7 @@ namespace UniversalApp.Services
             {
                 Debug.WriteLine(ex);
             }
-        }
-
-        public Invoice dbGetInvoice(int invoiceId)
-        {
-            try
-            {
-                using (var connection = dbService.GetConnection())
-                {
-                    // Retrieve invoice by its ID
-                    var invoice = connection.Table<Invoice>().FirstOrDefault(i => i.InvoiceId == invoiceId);
-
-                    return invoice;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return null;
-        }
+        }        
 
         public List<Item> dbGetItems(int invoiceId)
         {
@@ -139,29 +117,7 @@ namespace UniversalApp.Services
                 Debug.WriteLine(ex);
             }
         }
-
-        public List<Invoice> dbGetInvoices(int userId)
-        {
-            dbService.RunQuery();
-
-            try
-            {
-                using (var connection = dbService.GetConnection())
-                {
-                    // Retrieve invoices by user ID
-                    List<Invoice> invoices = connection.Table<Invoice>().Where(i => i.UserId == userId).ToList();
-
-                    return invoices;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return null;
-        }
-
+     
         public List<InvoicePreviewDTO> dbGetInvoicePreviews(int userId)
         {
             dbService.RunQuery();
@@ -173,7 +129,7 @@ namespace UniversalApp.Services
                     var invoicePreviews = connection.Table<Invoice>()
                         .Where(i => i.UserId == userId)
                         .Select(i => new InvoicePreviewDTO(
-                            i.InvoiceId,
+                            i.Id,
                             i.skuTypeId,
                             i.ClientName,
                             i.JobName,
@@ -204,7 +160,7 @@ namespace UniversalApp.Services
                     connection.Table<Item>().Delete(i => i.InvoiceId == invoiceId);
 
                     // Delete invoice
-                    connection.Table<Invoice>().Delete(i => i.InvoiceId == invoiceId);
+                    connection.Table<Invoice>().Delete(i => i.Id == invoiceId);
                 }
             }
             catch (Exception ex)

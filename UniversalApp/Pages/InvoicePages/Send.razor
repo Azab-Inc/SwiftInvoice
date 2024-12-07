@@ -77,12 +77,13 @@
 
     private decimal total = 0.0m;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         int invoiceId = InvoiceId;
+        currentUser = userService.dbLoadUser();
 
-        // Load Invoice
-        invoice = invoiceService.dbGetInvoice(invoiceId);
+        // Load Invoice        
+        invoice = invoiceService.dbGetSingle(currentUser.UserId, invoiceId);
 
         if (invoice != null)
         {
