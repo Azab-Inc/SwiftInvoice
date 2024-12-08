@@ -87,9 +87,12 @@
       <Content Remove="Pages\Clients.razor" />
       <Content Remove="Pages\EditInvoice.razor" />
       <Content Remove="Pages\SendInvoice.razor" />
+      <Content Remove="Pages\SKUPages\Create.razor" />
+      <Content Remove="Pages\SKUPages\Edit.razor" />
       <Content Remove="Pages\SKUs.razor" />
       <Content Remove="Shared\Components\AccountDetailsComponent.razor" />
       <Content Remove="Shared\Components\BankAccountsSectionComponent.razor" />
+      <Content Remove="Shared\Components\CardComponent.razor" />
       <Content Remove="Shared\Components\SurveyComponent.razor" />
       <Content Remove="Shared\Components\ToasterComponent.razor" />
     </ItemGroup>
