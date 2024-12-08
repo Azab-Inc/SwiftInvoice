@@ -3,6 +3,8 @@
 @using UniversalApp.Models;
 @using UniversalApp.DTOs;
 @using UniversalApp.Services;
+@using UniversalApp.DTOs.ClientDTOs;
+@using UniversalApp.Shared.Components;
 
 <h1 class="page-heading">All Clients</h1>
 
@@ -12,21 +14,24 @@
     <a><button @onclick="() => OnSearch()" class="btn-pri ml-auto">Search</button></a>
 </div>
 
-<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-3 mx-auto">
+<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2  gap-3 my-3 mx-auto">
+    
     @if (clients != null && clients.Any())
     {
-        @foreach (var client in clients)
+        @foreach (ClientPreviewDTO client in clients)
         {
-            <div class="border-2 border-pri p-3">
-                <h3>@client.FirstName @client.LastName</h3>
-                <p>Email: @client.Email</p>
-                <p>Phone: @client.Phone</p>
-                <p>Invoices: @client.Invoices</p>
+            <CardComponent>
+                <h3><b>Client: </b>@client.FirstName @client.LastName</h3>
+                <div class="flex flex-col gap-1 lg:flex-row">
+                    <p><b>Email:</b> @client.Email</p>
+                    <p><b>Phone:</b> @client.Phone</p>
+                </div>
+                <p><b>Invoices:</b> @client.Invoices</p>
 
                 @if (!string.IsNullOrEmpty(client.ProfileImg))
                 {
                     <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(File.ReadAllBytes(client.ProfileImg))}")"
-                         alt="Profile Image" class="w-full object-contain" />
+                         alt="Profile Image" class="w-full max-h-40 object-contain" />
                 }
                 else
                 {
@@ -36,7 +41,7 @@
                 <a href="/clients/edit/@client.Id">
                     <button class="btn btn-pri">Manage Client</button>
                 </a>
-            </div>
+            </CardComponent>
         }
     }
     else
@@ -49,6 +54,7 @@
 @code {
     private ClientService clientService = new ClientService();
     private UserService userService = new UserService();
+    private InvoiceService invoiceService = new InvoiceService();
     private List<ClientPreviewDTO> clients = new List<ClientPreviewDTO>();
     private User currentUser = new User();
     private string searchTerm = string.Empty;
@@ -61,18 +67,14 @@
         clients = clientService.dbGetManyDTO(currentUser.UserId, 20, 0, client =>
         {
 
-            int numInvoices = GetNumberOfInvoicesForClient(client.Id);
+            int numInvoices = invoiceService.dbGetNumClientInvoices(currentUser.UserId, client.Id);
             return ClientMapper.MapClientToDTO(client, numInvoices);
         });
     }
 
     private void OnSearch()
     {
-        clients = clientService.dbSearch(currentUser.UserId, searchTerm, client =>
-        {
-            int numInvoices = GetNumberOfInvoicesForClient(client.Id);
-            return ClientMapper.MapClientToDTO(client, numInvoices);
-        });
+        clients = clientService.dbSearch(currentUser.UserId, searchTerm);
     }
 
     private int GetNumberOfInvoicesForClient(int clientId)

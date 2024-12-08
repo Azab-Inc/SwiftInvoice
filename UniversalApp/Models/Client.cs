@@ -1,8 +1,7 @@
 ﻿using SQLite;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using UniversalApp.DTOs;
-using UniversalApp.Services;
+using UniversalApp.DTOs.ClientDTOs;
 
 namespace UniversalApp.Models
 {
@@ -29,20 +28,21 @@ namespace UniversalApp.Models
         [Required]
         [Phone]
         public string Phone { get; set; }
-        
+
+        public bool isB2B { get; set; }
+
         public string ProfileImg { get; set; }
 
         public string? BusinessNumber { get; set; }
 
-        public string? BusinessName { get; set; }
+        public string? BusinessName { get; set; } 
 
-        [Url]
+        
         public string? Website { get; set; }
 
         public int UserId { get; set; }
     }
-
-    // Move static method outside the class but still in the same file
+    
     public static class ClientMapper
     {
         
@@ -54,6 +54,7 @@ namespace UniversalApp.Models
                 client.LastName,
                 client.Email,
                 client.Phone,
+                client.isB2B,
                 client.ProfileImg,
                 numInvoices
             );

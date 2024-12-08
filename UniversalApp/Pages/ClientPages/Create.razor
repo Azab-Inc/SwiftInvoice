@@ -38,6 +38,15 @@
             <div class="form-group">
                 <label for="profileImg">Profile Image</label>
                 <InputFile id="profileImg" class="form-control" OnChange="HandleFileUpload" />
+                @if (!string.IsNullOrEmpty(fileErrorMessage))
+                {
+                    <div class="text-red-500 text-sm">@fileErrorMessage</div>
+                }
+            </div>
+
+            <div class="flex flex-row gap-x-1 items-center justify-start">
+                <label class="tooltip" data-tip="Is this invoice for another business?" for="isB2B">Is B2B</label>
+                <InputCheckbox id="isB2B" class="checkbox w-4 checkbox-[pri]" @bind-Value="newClient.isB2B" />
             </div>
 
             <div class="form-group">
@@ -72,6 +81,9 @@
     private User currentUser = new User();
     private bool success = false;
     private IBrowserFile uploadedFile;
+    private string fileErrorMessage = string.Empty; // Store error message for file upload
+
+    private const long MaxFileSize = 512000; // Maximum file size in bytes (512 KB)
 
     protected override void OnInitialized()
     {
@@ -80,45 +92,46 @@
 
     private void HandleFileUpload(InputFileChangeEventArgs e)
     {
-        // Save the file temporarily when it's selected
+        // Reset error message
+        fileErrorMessage = string.Empty;
+
         uploadedFile = e.File;
+
+        if (uploadedFile.Size > MaxFileSize)
+        {
+            fileErrorMessage = $"Supplied file with size {uploadedFile.Size / 1024} KB exceeds the maximum allowed size of {MaxFileSize / 1024} KB.";
+            uploadedFile = null; // Reject the file
+        }
     }
 
     private async Task HandleValidSubmit()
     {
-        // Ensure file is uploaded before processing
-        if (uploadedFile != null)
+        if (uploadedFile == null)
         {
-            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            var safeFirstName = string.IsNullOrEmpty(newClient.FirstName) ? "Unknown" : newClient.FirstName.Replace(" ", "_");
-            var safeLastName = string.IsNullOrEmpty(newClient.LastName) ? "Unknown" : newClient.LastName.Replace(" ", "_");
-
-            var newFileName = $"{timestamp}_{safeFirstName}_{safeLastName}_{newClient.Id}{Path.GetExtension(uploadedFile.Name)}";
-
-            var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwiftInvoice", "ClientProfiles");
-            
-            
-            Directory.CreateDirectory(folderPath);
-
-            var filePath = Path.Combine(folderPath, newFileName);
-            uploadedFilePath = filePath;
-
-        
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await uploadedFile.OpenReadStream().CopyToAsync(fileStream);
-            }
-
-        
-            newClient.ProfileImg = uploadedFilePath;
-        }
-        else
-        {
-        
+            fileErrorMessage = "Please upload a valid file under 512 KB.";
             return;
         }
 
-        // Now create the client in the database
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        var safeFirstName = string.IsNullOrEmpty(newClient.FirstName) ? "Unknown" : newClient.FirstName.Replace(" ", "_");
+        var safeLastName = string.IsNullOrEmpty(newClient.LastName) ? "Unknown" : newClient.LastName.Replace(" ", "_");
+
+        var newFileName = $"{timestamp}_{safeFirstName}_{safeLastName}_{newClient.Id}{Path.GetExtension(uploadedFile.Name)}";
+
+        var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwiftInvoice", "ClientProfiles");
+        Directory.CreateDirectory(folderPath);
+
+        var filePath = Path.Combine(folderPath, newFileName);
+        uploadedFilePath = filePath;
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await uploadedFile.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
+        }
+
+        newClient.ProfileImg = uploadedFilePath;
+
+        // Create the client in the database
         ClientService clientService = new ClientService();
         clientService.dbCreate(currentUser.UserId, newClient);
         success = true;

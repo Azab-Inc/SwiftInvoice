@@ -39,6 +39,10 @@
             </div>
 
             <div class="w-full sm:w-1/2">
+                <div class="flex flex-row gap-x-1 items-center justify-start">
+                    <label class="tooltip" data-tip="Is this invoice for another business?" for="isB2B">Is B2B</label>
+                    <InputCheckbox id="isB2B" class="checkbox w-4 checkbox-[pri]" @bind-Value="currentClient.isB2B" />
+                </div>
                 <div class="form-group">
                     <label for="businessNumber">Business Number</label>
                     <InputText id="businessNumber" class="form-control" @bind-Value="currentClient.BusinessNumber" />
@@ -57,6 +61,10 @@
                 <div class="form-group">
                     <label for="profileImg">Profile Image</label>
                     <InputFile id="profileImg" class="form-control" OnChange="HandleFileUpload" />
+                    @if (uploadError != null)
+                    {
+                        <p class="text-red-500">@uploadError</p>
+                    }
                 </div>
 
                 <div class="form-group">
@@ -80,9 +88,18 @@
 
         @if (deleteClient)
         {
-            <ToasterComponent Message="Are you sure you want to delete this client?" Type="danger" Redirect="false" Location="" Url="" />
-            <button @onclick:preventDefault="true" @onclick="ConfirmDeleteClient" class="btn btn-danger mt-3">Confirm delete</button>
-        }
+            @if (canDeleteClient)
+            {
+                <ToasterComponent Message="Are you sure you want to delete this client?" Type="danger" Redirect="false" Location="" Url="" />
+                <button @onclick:preventDefault="true" @onclick="ConfirmDeleteClient" class="btn btn-danger mt-3">Confirm delete</button>
+            }
+            else
+            {
+                <ToasterComponent Message="This client is still linked to some invoices" Type="danger" Redirect="false" Location="" Url="" />
+                
+            }
+
+    }
 
         @if (confirmSave)
         {
@@ -113,11 +130,15 @@ else
     private Client currentClient = new Client();
     private ClientService clientService = new ClientService();
 
+    private InvoiceService invoiceService = new InvoiceService();
+
     private IBrowserFile uploadedFile;
     private byte[] previewImage;
 
+    private string uploadError;
     private bool savedChanges = false;
     private bool deleteClient = false;
+    private bool canDeleteClient = false;
     private bool confirmSave = false;
 
     private bool hasPreview = false; // Add this state variable
@@ -131,6 +152,16 @@ else
     private async Task HandleFileUpload(InputFileChangeEventArgs e)
     {
         uploadedFile = e.File;
+
+        if (uploadedFile.Size > 512 * 1024)
+        {
+            uploadError = "File size exceeds the limit of 512 KB.";
+            previewImage = null;
+            hasPreview = false;
+            return;
+        }
+
+        uploadError = null;
 
         using (var stream = uploadedFile.OpenReadStream())
         {
@@ -182,7 +213,13 @@ else
     private void StartDeleteClientConfirmation()
     {
         deleteClient = true;
-        confirmSave = false;
+
+        @if (invoiceService.dbGetNumClientInvoices(currentUser.UserId, currentClient.Id) == 0)
+        {
+            canDeleteClient = true;
+        }
+
+    confirmSave = false;
     }
 
     private void StartSaveChangesConfirmation()
