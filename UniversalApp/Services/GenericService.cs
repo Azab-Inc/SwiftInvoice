@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Components.Web.Virtualization;
-using System.Diagnostics;
-using UniversalApp.DTOs;
-using UniversalApp.Models;
+﻿using System.Diagnostics;
 
 namespace UniversalApp.Services
 {
     public class GenericService<T, TDTO> where T : class, IHasUserId, new()
     {
-        private readonly DbService dbService = new DbService();
+        public readonly DbService dbService = new DbService();
 
         public GenericService() { }
 
@@ -104,27 +101,6 @@ namespace UniversalApp.Services
                 {
                     throw new InvalidOperationException("Entity not found or access denied.");
                 }
-            }
-        }
-
-        public virtual List<TDTO> dbSearch(int userId, string searchTerm, Func<T, TDTO> mapToDto, int pageSize = 20)
-        {
-            using (var connection = dbService.GetConnection())
-            {
-                // Check if the searchTerm is null or empty to prevent unnecessary searches
-                if (string.IsNullOrEmpty(searchTerm))
-                {
-                    return new List<TDTO>(); // Return an empty list if no search term is provided
-                }
-
-                var entities = connection.Table<T>()
-                    .Where(t => t.UserId == userId &&
-                                EntityMatchesSearchTerm(t, searchTerm))
-                    .Take(pageSize)
-                    .ToList();
-
-                return entities.Select(mapToDto).ToList();
-
             }
         }
 
