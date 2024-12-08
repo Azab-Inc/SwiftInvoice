@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using UniversalApp.DTOs;
 using UniversalApp.Models;
 
@@ -8,9 +7,8 @@ namespace UniversalApp.Services
     public class InvoiceService : GenericService<Invoice, InvoicePreviewDTO>
     {
         private DbService dbService = new DbService();
+        private InvoiceItemService invoiceItemService = new InvoiceItemService();
         public InvoiceService() { }
-
-
 
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
         {
@@ -147,7 +145,6 @@ namespace UniversalApp.Services
             return null;
         }
 
-
         public void dbDeleteInvoice(int invoiceId)
         {
             dbService.RunQuery();
@@ -168,5 +165,43 @@ namespace UniversalApp.Services
                 Debug.WriteLine(ex);
             }
         }
+
+        public int dbGetNumClientInvoices(int userId, int clientId)
+        {
+            dbService.RunQuery();
+
+            try
+            {
+                using (var connection = dbService.GetConnection())
+                {
+                    return connection.Table<Invoice>().Where(i => i.UserId == userId).Where(i => i.ClientId == clientId).Count();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return 0;
+        }
+
+        public int dbGetNumSkuInvoices(int userId, int skuId)
+        {
+            dbService.RunQuery();
+
+            try
+            {
+                using (var connection = dbService.GetConnection())
+                {
+                    return connection.Table<Invoice>().Where(i => i.skuTypeId == skuId).Count();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return 0;
+        }
+        
     }
 }

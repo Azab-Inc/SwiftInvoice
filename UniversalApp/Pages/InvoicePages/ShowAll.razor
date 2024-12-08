@@ -2,27 +2,38 @@
 @using UniversalApp.DTOs;
 @using UniversalApp.Models;
 @using UniversalApp.Services;
+@using UniversalApp.Shared.Components;
 
 <h1 class="page-heading">All invoices</h1>
 
-<a href="/newinvoice"><button class="btn-pri ml-auto">New invoice</button></a>
+<a href="/newinvoice"><button class="btn-pri mx-auto my-3">New invoice</button></a>
 
-<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-3">
-    @foreach (InvoicePreviewDTO invoice in invoices)
-    {
-        <div class="flex flex-col p-3 border-2 border-pri">
-            <h2 class="text-2xl font-bold">@invoice.JobName</h2>
-            <h3>For <strong>@invoice.ClientName</strong></h3>
-            <span class="mt-3">@invoice.InvoiceNum</span>
-
-            <div class="flex flex-wrap justify-center items-center mt-3 gap-3">
-                <a href="/editinvoice/@invoice.InvoiceId"><button class="btn btn-warn">Edit</button></a>
-                <a href="/sendinvoice/@invoice.InvoiceId"><button class="btn btn-sec">Send</button></a>
-            </div>
-        </div>
-    }
-
-</div>
+    <table class="mx-auto w-full">
+        <thead>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Client</th>
+                <th>Job name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (InvoicePreviewDTO invoice in invoices)
+            {
+                <tr class="hover">
+                    <td>@invoice.InvoiceNum</td>
+                    <td>@invoice.ClientName</td>
+                    <td>@invoice.JobName</td>
+                    <td>
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                            <a href="/editinvoice/@invoice.InvoiceId"><button class="btn btn-warn">Edit</button></a>
+                            <a href="/sendinvoice/@invoice.InvoiceId"><button class="btn btn-sec">Send</button></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 @code {
     private InvoiceService invoiceService = new InvoiceService();

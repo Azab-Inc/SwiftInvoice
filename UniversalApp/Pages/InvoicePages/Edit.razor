@@ -1,5 +1,6 @@
 ﻿@page "/editinvoice/{InvoiceId:int}"
 @using UniversalApp.Models;
+@using UniversalApp.DTOs;
 @using UniversalApp.Services;
 @using UniversalApp.Shared.Components;
 @using Microsoft.AspNetCore.Components.Forms
@@ -19,7 +20,30 @@
                 </label>
                 <label>
                     <span>Client name:</span>
-                    <input @bind="invoice.ClientName" name="client-name" type="text" />
+                    <div>
+                        @if (clientOptions.Count > 0)
+                        {
+                            <select class="select select-bordered border-[1px] p-1 border-pri max-w-48" @bind="invoice.ClientId">
+                                @foreach (ClientNameSetDTO clientNameSet in clientOptions)
+                                {
+                                    <option class="border-[1px] p-1 border-pri" value="@clientNameSet.Id">
+                                        @if (clientNameSet.isB2B == true)
+                                        {
+                                            @clientNameSet.BusinessName
+                                        }
+                                        else
+                                        {
+                                            @clientNameSet.FirstName @clientNameSet.LastName
+                                        }
+                                    </option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <h2>No clients found, please add one.</h2>
+                        }
+                    </div>
                 </label>
                 <label>
                     <span>Job name:</span>
@@ -124,8 +148,8 @@
     </form>
 }
 else
-{
-    <p>Loading invoice...</p>
+{    
+    <span class="loading loading-ball loading-lg text-pri"></span>
 }
 
 @code {
@@ -143,6 +167,9 @@ else
     private User currentUser = new User();
     private UserService userService = new UserService();
 
+    private List<ClientNameSetDTO> clientOptions = new List<ClientNameSetDTO>();
+    private ClientService clientService = new ClientService();
+
 
 
     private bool savedChanges = false;
@@ -155,6 +182,8 @@ else
         currentUser = userService.dbLoadUser();
         
         invoice = invoiceService.dbGetSingle(currentUser.UserId, invoiceId);
+        clientOptions = clientService.dbGetClientNames(invoice.UserId);
+
 
         if (invoice != null)
         {
