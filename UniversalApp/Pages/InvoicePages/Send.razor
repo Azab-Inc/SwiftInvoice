@@ -72,6 +72,9 @@
     private UserService userService = new UserService();
     private User currentUser = new User();
 
+    private ClientService clientSerivce = new ClientService();
+    private Client currentClient = new Client();
+
     private BankAccountService bankAccountService = new BankAccountService();
     private BankAccount bankAccount = new BankAccount();
 
@@ -84,9 +87,20 @@
 
         // Load Invoice        
         invoice = invoiceService.dbGetSingle(currentUser.UserId, invoiceId);
+        currentClient = clientSerivce.dbGetSingle(currentUser.UserId, invoice.ClientId);
 
         if (invoice != null)
         {
+
+            if (currentClient.isB2B == true)
+            {
+                invoice.ClientName = currentClient.BusinessName;
+            }
+            else
+            {
+                invoice.ClientName = currentClient.FirstName + " " + currentClient.LastName;
+            }
+
             // Load Invoice Items
             invoiceItems = invoiceService.dbGetItems(invoiceId);
             currentUser = userService.dbGetUser(invoice.UserId);
