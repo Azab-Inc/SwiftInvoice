@@ -48,7 +48,7 @@
                     <td>@sku.SKUName</td>
                 }
                 <td>@sku.numInvoices</td>
-                <td>
+                <td class="flex gap-x-1">
                     @if (editMode && sku.Id == currentEditSkuId) 
                     {
                         <button @onclick="SaveEdit" class="btn btn-success">Save</button>
@@ -57,7 +57,10 @@
                     else 
                     {
                         <button @onclick="() => HandleEdit(sku)" class="btn btn-warning">Edit</button>
-                        <button @onclick="() => HandleDelete(sku)" class="btn btn-error">Delete</button>
+                        @if (@sku.numInvoices == 0)
+                        {
+                            <button @onclick="() => HandleDelete(sku)" class="btn btn-error">Delete</button>
+                        }
                     }
                 </td>
             </tr>
