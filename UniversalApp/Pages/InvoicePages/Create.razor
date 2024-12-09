@@ -185,8 +185,12 @@
 
     protected override void OnInitialized()
     {
+
         currentUser = userService.dbLoadUser();
-        skuOptions = skuService.dbGetMany(currentUser.UserId, skuService.dbGetCount(currentUser.UserId), 0); 
+        skuOptions = skuService.dbGetMany(currentUser.UserId, skuService.dbGetCount(currentUser.UserId), 0);
+        selectedSkuId = skuOptions[0].Id;
+        invoiceNumber = skuService.newestNum(currentUser.UserId, selectedSkuId) + 1;
+
         bankAccounts = bankAccountService.dbGetAccounts();
         newInvoice.UserId = currentUser.UserId;
         newInvoice.StartDate = DateTime.Now;
