@@ -16,10 +16,10 @@
             <label for="firstName">SKU Name</label>
             <input type="text" class="input input-bordered w-full max-w-xs" @bind-value="newSKU.SKUName" />
         </div>
-        <button type="submit" class="mx-auto mt-auto btn-suc text-xl px-4 py-2 h-fit" disabled="@(newSKU == null || alreadyExists)">Create</button> 
+        <button type="submit" class="mx-auto mt-auto btn-suc text-xl px-4 py-2 h-fit" disabled="@(newSKU == null)">Create</button> 
     </div>
 
-    @if (alreadyExists && successCreate == false)
+    @if (alreadyExists == true && successCreate == false)
     {
         <ToasterComponent Message="SKU already exists!" Type="danger" Redirect="false" Location="" Url="" />
     }
@@ -116,16 +116,30 @@
 
     void SaveEdit()
     {
-        //SKUTableDTO skuToEdit = currentSKUs.FirstOrDefault(s => s.Id == currentEditSkuId); 
-        SKU skuToEdit = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId);
+        try
+        {
+            alreadyExists = SKUService.alreadyExists(currentUser.UserId, newSkuName);
 
-        skuToEdit.SKUName = newSkuName;
-        SKUService.dbEdit(currentUser.UserId, skuToEdit);
+        }
+        catch
+        {
+            alreadyExists = false;
+        }
+
+        if (!alreadyExists)
+        {            
+            SKU skuToEdit = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId);
+
+            skuToEdit.SKUName = newSkuName;
+            SKUService.dbEdit(currentUser.UserId, skuToEdit);
 
 
-        editMode = false;
-        currentEditSkuId = 0;
-        loadSKUs();
+            editMode = false;
+            currentEditSkuId = 0;
+            loadSKUs();
+        }
+
+
     }
 
     void CancelEdit()
