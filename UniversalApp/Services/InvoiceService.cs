@@ -8,6 +8,7 @@ namespace UniversalApp.Services
     {
         private DbService dbService = new DbService();
         private InvoiceItemService invoiceItemService = new InvoiceItemService();
+        private ClientService clientService = new ClientService();
         public InvoiceService() { }
 
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
@@ -126,13 +127,33 @@ namespace UniversalApp.Services
                 {
                     var invoicePreviews = connection.Table<Invoice>()
                         .Where(i => i.UserId == userId)
-                        .Select(i => new InvoicePreviewDTO(
-                            i.Id,
-                            i.skuTypeId,
-                            i.ClientName,
-                            i.JobName,
-                            i.InvoiceNum
-                        )).ToList();
+                        //.Select(i => new InvoicePreviewDTO(
+                        //    i.Id,
+                        //    i.skuTypeId,
+                        //    i.ClientName,
+                        //    i.JobName,
+                        //    i.InvoiceNum
+                        //))
+                        .Select(i =>
+                        {
+                            Client client = clientService.dbGetSingle(userId, i.ClientId);
+                            string clientName = "";
+                            if (client.isB2B)
+                            {
+                                clientName = client.BusinessName;
+                            }
+                            else
+                            {
+                                clientName = client.FirstName + " " + client.LastName;
+                            }
+                            return new InvoicePreviewDTO(
+                                i.Id,
+                                i.skuTypeId,
+                                clientName,
+                                i.JobName,
+                                i.InvoiceNum);
+                        })
+                        .ToList();
 
                     return invoicePreviews;
                 }
