@@ -127,13 +127,6 @@ namespace UniversalApp.Services
                 {
                     var invoicePreviews = connection.Table<Invoice>()
                         .Where(i => i.UserId == userId)
-                        //.Select(i => new InvoicePreviewDTO(
-                        //    i.Id,
-                        //    i.skuTypeId,
-                        //    i.ClientName,
-                        //    i.JobName,
-                        //    i.InvoiceNum
-                        //))
                         .Select(i =>
                         {
                             Client client = clientService.dbGetSingle(userId, i.ClientId);
