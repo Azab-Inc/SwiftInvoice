@@ -6,22 +6,42 @@
 @using UniversalApp.Shared.Components;
 @using Microsoft.AspNetCore.Components.Forms
 
-
 <h1 class="page-heading">New Invoice</h1>
 
-<form class="new-invoice mx-auto my-3 flex flex-col gap-3">
+<EditForm Model="newInvoice" OnValidSubmit="SaveInvoice">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="flex flex-col md:flex-row md:gap-x-2">
         <div class="md:w-2/5">
             <label>
-                <span>Invoice num:</span>
-                <input @bind="newInvoice.InvoiceNum" name="invoice-num" type="text" />
+                <span>SKU Type:</span>
+                @if (skuOptions.Count > 0)
+                {
+                    <select class="select select-bordered border-[1px] p-1 border-pri min-w-20" 
+                            
+                            @onchange="OnSkuSelected"> 
+                        @foreach (SKU sku in skuOptions)
+                        {
+                            <option value="@sku.Id">@sku.SKUName</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <h2>No SKUs found, please add one.</h2>
+                }
             </label>
             <label>
-                <span>Client name:</span>                
+                <span>Invoice Number:</span>
+                <span>@invoiceNumber</span> 
+            </label>
+            <label>
+                <span>Client name:</span> 
                 <div>
                     @if (clientOptions.Count > 0)
                     {
-                        <select class="select select-bordered border-[1px] p-1 border-pri max-w-48" name="client-name" @bind="@newInvoice.ClientId">
+                        <select class="select select-bordered border-[1px] p-1 border-pri max-w-48" name="client-name" @bind="newInvoice.ClientId">
                             @foreach (ClientNameSetDTO clientNameSet in clientOptions)
                             {
                                 <option class="border-[1px] p-1 border-pri" value="@clientNameSet.Id">
@@ -33,13 +53,13 @@
                                     {
                                         @clientNameSet.FirstName @clientNameSet.LastName
                                     }
-                               </option>
+                                </option>
                             }
                         </select>
                     }
                     else
                     {
-                        <h2>No bank accounts found, please add one.</h2>
+                        <h2>No clients found, please add one.</h2>
                     }
                 </div>
             </label>
@@ -73,7 +93,7 @@
         </div>
     </div>
     <hr />
-    <div>        
+    <div>
         @foreach (Item item in invoiceItems)
         {
             <div class="w-full flex flex-col p-3 border-pri border-2 rounded-md mt-3 mx-auto">
@@ -99,9 +119,9 @@
 
         <div>
             @if (bankAccounts.Count > 0)
-            {                
+            {
                 <h2>Account Payable</h2>
-                <select name="bank-account" @bind="@selectedAccount.AccountId">                
+                <select name="bank-account" @bind="@selectedAccount.AccountId">
                     @foreach (BankAccount bankAccount in bankAccounts)
                     {
                         <option value="@bankAccount.AccountId">@bankAccount.BankName</option>
@@ -118,7 +138,7 @@
             <button class="btn btn-sec" @onclick:preventDefault="true" @onclick="AddItem">Add item</button>
         </div>
     </div>
-</form>
+</EditForm>
 
 @if (!createdInvoice)
 {
@@ -140,12 +160,14 @@
     </div>
 }
 
-
 @code {
     private bool createdInvoice = false;
     private InvoiceService invoiceService = new InvoiceService();
     private Invoice newInvoice = new Invoice();
     private List<Item> invoiceItems = new List<Item>();
+
+    private List<SKU> skuOptions = new List<SKU>();
+    private SKUService skuService = new SKUService(); 
 
     private UserService userService = new UserService();
     private User currentUser = new User();
@@ -158,9 +180,13 @@
     private List<BankAccount> bankAccounts = new List<BankAccount>();
     private BankAccount selectedAccount = new BankAccount();
 
+    private int selectedSkuId = 0; 
+    private int invoiceNumber = 0; 
+
     protected override void OnInitialized()
     {
         currentUser = userService.dbLoadUser();
+        skuOptions = skuService.dbGetMany(currentUser.UserId, skuService.dbGetCount(currentUser.UserId), 0); 
         bankAccounts = bankAccountService.dbGetAccounts();
         newInvoice.UserId = currentUser.UserId;
         newInvoice.StartDate = DateTime.Now;
@@ -178,6 +204,26 @@
     private void RemoveItem(Item item)
     {
         invoiceItems.Remove(item);
+    }
+
+    private void OnSkuSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out selectedSkuId))
+        {
+            SKU currentSKU = skuService.dbGetSingle(currentUser.UserId, selectedSkuId);
+            invoiceNumber = skuService.newestNum(currentUser.UserId, currentSKU.Id) + 1; 
+
+            newInvoice.skuTypeId = selectedSkuId;
+            if (invoiceNumber < 100)
+            {
+                currentSKU.SKUName += "0";
+            }
+            if (invoiceNumber < 10)
+            {
+                currentSKU.SKUName += "0";
+            }
+            newInvoice.InvoiceNum = currentSKU.SKUName + invoiceNumber;
+        }
     }
 
     private void SaveInvoice()
