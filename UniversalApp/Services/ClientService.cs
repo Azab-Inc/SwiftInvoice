@@ -7,6 +7,9 @@ namespace UniversalApp.Services
 {
     public class ClientService : GenericService<Client, ClientPreviewDTO>, ISearchable<ClientPreviewDTO>
     {
+
+        public ClientService() { }
+
         public List<ClientNameSetDTO> dbGetClientNames(int userId)
         {
             using (var connection = dbService.GetConnection())
