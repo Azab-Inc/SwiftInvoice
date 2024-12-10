@@ -19,7 +19,7 @@
     <a class="text-3xl font-bold hover:bg-pri" href="/">SwiftInvoice</a>
     <button class="fa-solid fa-bars fa-2xl" style="color: #ffffff;" @onclick="toggleMenu"></button>
 </nav>
-<div id="mobile-nav" class="w-full fixed inset-y-0 bg-pri transform transition-transform ease-in-out duration-900 sm:hidden" hidden="@menuHidden">
+<div id="mobile-nav" class="z-50 w-full fixed inset-y-0 bg-pri transform transition-transform ease-in-out duration-900 sm:hidden" hidden="@menuHidden">
     <button class="fa-solid fa-bars fa-2xl fixed right-4 top-7" style="color: #ffffff;" @onclick="toggleMenu"></button>
 
     <div class="flex flex-col justify-center items-center text-5xl font-bold gap-3 text-white h-full text-center">
