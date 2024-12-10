@@ -82,6 +82,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AndroidResource Remove="wwwroot\node_modules\**" />
+      <Compile Remove="wwwroot\node_modules\**" />
+      <Content Remove="wwwroot\node_modules\**" />
+      <EmbeddedResource Remove="wwwroot\node_modules\**" />
+      <None Remove="wwwroot\node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Remove="Pages\ClientPages\Create.razor" />
       <Content Remove="Pages\ClientPages\Edit.razor" />
       <Content Remove="Pages\Clients.razor" />
