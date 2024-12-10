@@ -1,4 +1,5 @@
-﻿@page "/skus"
+﻿
+@page "/skus"
 @using UniversalApp.Models;
 @using UniversalApp.DTOs;
 @using UniversalApp.Services;
@@ -9,172 +10,172 @@
 <h1 class="page-heading">Create SKU</h1>
 
 <EditForm Model="newSKU" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="flex flex-col sm:flex-row gap-x-2 my-3">
-        <div class="form-group">
-            <label for="firstName">SKU Name</label>
-            <input type="text" class="input input-bordered w-full max-w-xs" @bind-value="newSKU.SKUName" />
-        </div>
-        <button type="submit" class="mx-auto mt-auto btn-suc text-xl px-4 py-2 h-fit" disabled="@(newSKU == null)">Create</button> 
-    </div>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="flex flex-col sm:flex-row gap-x-2 my-3">
+        <div class="form-group">
+            <label for="firstName">SKU Name</label>
+            <input type="text" class="input input-bordered w-full max-w-xs" @bind-value="newSKU.SKUName" />
+        </div>
+        <button type="submit" class="mx-auto mt-auto btn-suc text-xl px-4 py-2 h-fit" disabled="@(newSKU == null)">Create</button> 
+    </div>
 
-    @if (alreadyExists == true && successCreate == false)
-    {
-        <ToasterComponent Message="SKU already exists!" Type="danger" Redirect="false" Location="" Url="" />
-    }
+    @if (alreadyExists == true && successCreate == false)
+    {
+        <ToasterComponent Message="SKU already exists!" Type="danger" Redirect="false" Location="" Url="" />
+    }
 </EditForm>
 
 <table class="mx-auto w-full">
-    <thead>
-        <tr>
-            <td>Id</td>
-            <td>Name</td>
-            <td>Connected Invoices</td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (SKUTableDTO sku in currentSKUs)
-        {
-            <tr>
-                <td>@sku.Id</td>
-                @if (editMode && sku.Id == currentEditSkuId) 
-                {
-                    <td><input type="text" class="input input-bordered w-full max-w-xs" @bind-value="newSkuName" /></td>
-                }
-                else 
-                {
-                    <td>@sku.SKUName</td>
-                }
-                <td>@sku.numInvoices</td>
-                <td class="flex gap-x-1">
-                    @if (editMode && sku.Id == currentEditSkuId) 
-                    {
-                        <button @onclick="SaveEdit" class="btn btn-success">Save</button>
-                        <button @onclick="CancelEdit" class="btn btn-error">Cancel</button>
-                    }
-                    else 
-                    {
-                        <button @onclick="() => HandleEdit(sku)" class="btn btn-warning">Edit</button>
-                        @if (@sku.numInvoices == 0)
-                        {
-                            <button @onclick="() => HandleDelete(sku)" class="btn btn-error">Delete</button>
-                        }
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Connected Invoices</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (SKUTableDTO sku in currentSKUs)
+        {
+            <tr>
+                <td>@sku.Id</td>
+                @if (editMode && sku.Id == currentEditSkuId) 
+                {
+                    <td><input type="text" class="input input-bordered w-full max-w-xs" @bind-value="newSkuName" /></td>
+                }
+                else 
+                {
+                    <td>@sku.SKUName</td>
+                }
+                <td>@sku.numInvoices</td>
+                <td class="flex gap-x-1">
+                    @if (editMode && sku.Id == currentEditSkuId) 
+                    {
+                        <button @onclick="SaveEdit" class="btn btn-success">Save</button>
+                        <button @onclick="CancelEdit" class="btn btn-error">Cancel</button>
+                    }
+                    else 
+                    {
+                        <button @onclick="() => HandleEdit(sku)" class="btn btn-warning">Edit</button>
+                        @if (@sku.numInvoices == 0)
+                        {
+                            <button @onclick="() => HandleDelete(sku)" class="btn btn-error">Delete</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @code {
-    private SKUService SKUService = new SKUService();
-    private SKU newSKU = new SKU();
-    private List<SKUTableDTO> currentSKUs = new List<SKUTableDTO>();
-    private List<SKU> tmpSKUs = new List<SKU>();
+    private SKUService SKUService = new SKUService();
+    private SKU newSKU = new SKU();
+    private List<SKUTableDTO> currentSKUs = new List<SKUTableDTO>();
+    private List<SKU> tmpSKUs = new List<SKU>();
 
-    private User currentUser = new User();
-    private UserService userService = new UserService();
+    private User currentUser = new User();
+    private UserService userService = new UserService();
 
-    private InvoiceService invoiceService = new InvoiceService();
+    private InvoiceService invoiceService = new InvoiceService();
 
-    private bool alreadyExists = false;
-    private bool successCreate = false;
-    private bool deletedBanned = false;
-    private bool editMode = false;
+    private bool alreadyExists = false;
+    private bool successCreate = false;
+    private bool deletedBanned = false;
+    private bool editMode = false;
 
-    private int currentEditSkuId = 0;
+    private int currentEditSkuId = 0;
 
-    private string newSkuName = "";
+    private string newSkuName = "";
 
-    protected override void OnInitialized()
-    {
-        currentUser = userService.dbLoadUser();
-        loadSKUs();
-    }
+    protected override void OnInitialized()
+    {
+        currentUser = userService.dbLoadUser();
+        loadSKUs();
+    }
 
-    void HandleValidSubmit()
-    {
-        alreadyExists = SKUService.alreadyExists(currentUser.UserId, newSKU.SKUName);
+    void HandleValidSubmit()
+    {
+        alreadyExists = SKUService.alreadyExists(currentUser.UserId, newSKU.SKUName);
 
-        if (!alreadyExists)
-        {
-            SKUService.dbCreate(currentUser.UserId, newSKU);
-            successCreate = true;
-            loadSKUs();
-            newSKU = new SKU(); // Clear the newSKU after successful creation
-        }
-    }
+        if (!alreadyExists)
+        {
+            SKUService.dbCreate(currentUser.UserId, newSKU);
+            successCreate = true;
+            loadSKUs();
+            newSKU = new SKU(); // Clear the newSKU after successful creation
+        }
+    }
 
-    void HandleEdit(SKUTableDTO skuDTO)
-    {
-        currentEditSkuId = skuDTO.Id;
-        newSkuName = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId).SKUName;
-        editMode = true;
-    }
+    void HandleEdit(SKUTableDTO skuDTO)
+    {
+        currentEditSkuId = skuDTO.Id;
+        newSkuName = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId).SKUName;
+        editMode = true;
+    }
 
-    void SaveEdit()
-    {
-        try
-        {
-            alreadyExists = SKUService.alreadyExists(currentUser.UserId, newSkuName);
+    void SaveEdit()
+    {
+        try
+        {
+            alreadyExists = SKUService.alreadyExists(currentUser.UserId, newSkuName);
 
-        }
-        catch
-        {
-            alreadyExists = false;
-        }
+        }
+        catch
+        {
+            alreadyExists = false;
+        }
 
-        if (!alreadyExists)
-        {            
-            SKU skuToEdit = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId);
+        if (!alreadyExists)
+        {            
+            SKU skuToEdit = SKUService.dbGetSingle(currentUser.UserId, currentEditSkuId);
 
-            skuToEdit.SKUName = newSkuName;
-            SKUService.dbEdit(currentUser.UserId, skuToEdit);
-
-
-            editMode = false;
-            currentEditSkuId = 0;
-            loadSKUs();
-        }
+            skuToEdit.SKUName = newSkuName;
+            SKUService.dbEdit(currentUser.UserId, skuToEdit);
 
 
-    }
+            editMode = false;
+            currentEditSkuId = 0;
+            loadSKUs();
+        }
 
-    void CancelEdit()
-    {
-        editMode = false;
-        currentEditSkuId = 0;
-        loadSKUs(); 
-    }
 
-    void HandleDelete(SKUTableDTO skuDTO)
-    {
-        SKU sku = new SKU
-        {
-            Id = skuDTO.Id,
-            SKUName = skuDTO.SKUName,
-            UserId = skuDTO.UserId
-        };
+    }
 
-        if (invoiceService.dbGetNumSkuInvoices(currentUser.UserId, sku.Id) == 0)
-        {
-            SKUService.dbDelete(currentUser.UserId, sku);
-            loadSKUs(); 
-        }
-    }
+    void CancelEdit()
+    {
+        editMode = false;
+        currentEditSkuId = 0;
+        loadSKUs(); 
+    }
 
-    void loadSKUs()
-    {
-        currentSKUs = new List<SKUTableDTO>();
-        tmpSKUs = SKUService.dbGetMany(currentUser.UserId, SKUService.dbGetCount(currentUser.UserId), 0);
+    void HandleDelete(SKUTableDTO skuDTO)
+    {
+        SKU sku = new SKU
+        {
+            Id = skuDTO.Id,
+            SKUName = skuDTO.SKUName,
+            UserId = skuDTO.UserId
+        };
 
-        foreach (SKU sku in tmpSKUs)
-        {
-            int numInvoices = invoiceService.dbGetNumSkuInvoices(currentUser.UserId, sku.Id);
-            SKUTableDTO sKUTableDTO = new SKUTableDTO(sku.Id, sku.SKUName, numInvoices, currentUser.UserId);
-            currentSKUs.Add(sKUTableDTO);
-        }
-    }
+        if (invoiceService.dbGetNumSkuInvoices(currentUser.UserId, sku.Id) == 0)
+        {
+            SKUService.dbDelete(currentUser.UserId, sku);
+            loadSKUs(); 
+        }
+    }
+
+    void loadSKUs()
+    {
+        currentSKUs = new List<SKUTableDTO>();
+        tmpSKUs = SKUService.dbGetMany(currentUser.UserId, SKUService.dbGetCount(currentUser.UserId), 0);
+
+        foreach (SKU sku in tmpSKUs)
+        {
+            int numInvoices = invoiceService.dbGetNumSkuInvoices(currentUser.UserId, sku.Id);
+            SKUTableDTO sKUTableDTO = new SKUTableDTO(sku.Id, sku.SKUName, numInvoices, currentUser.UserId);
+            currentSKUs.Add(sKUTableDTO);
+        }
+    }
 }

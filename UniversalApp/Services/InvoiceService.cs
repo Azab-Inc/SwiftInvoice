@@ -62,7 +62,7 @@ namespace UniversalApp.Services
                         connection.Update(existingInvoice);
 
                         // Delete existing items associated with the invoice
-                        dbDeleteItems(existingInvoice.Id);
+                        invoiceItemService.dbDeleteItems(existingInvoice.Id);
 
                         // Add the new items with the updated invoice id
                         foreach (var newItem in items)
@@ -79,44 +79,6 @@ namespace UniversalApp.Services
             }
         }        
 
-        public List<Item> dbGetItems(int invoiceId)
-        {
-            try
-            {
-                using (var connection = dbService.GetConnection())
-                {
-                    // Retrieve items associated with the invoice ID
-                    var items = connection.Table<Item>().Where(i => i.InvoiceId == invoiceId).ToList();
-
-                    return items;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return null;
-        }
-
-        public void dbDeleteItems(int invoiceId)
-        {
-            dbService.RunQuery();
-
-            try
-            {
-                using (var connection = dbService.GetConnection())
-                {
-                    // Delete invoice items associated with the given invoiceId
-                    connection.Table<Item>().Delete(i => i.InvoiceId == invoiceId);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-     
         public List<InvoicePreviewDTO> dbGetInvoicePreviews(int userId)
         {
             dbService.RunQuery();

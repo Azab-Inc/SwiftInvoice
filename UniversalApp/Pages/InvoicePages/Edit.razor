@@ -160,6 +160,8 @@ else
     private Invoice invoice = new Invoice();
     private List<Item> invoiceItems = new List<Item>();
 
+    private InvoiceItemService invoiceItemService = new InvoiceItemService();
+
     private BankAccountService bankAccountService = new BankAccountService();
     private List<BankAccount> bankAccounts = new List<BankAccount>();
     private BankAccount currentAccount = new BankAccount();
@@ -189,7 +191,7 @@ else
         if (invoice != null)
         {
             // Load Invoice Items
-            invoiceItems = invoiceService.dbGetItems(invoiceId);
+            invoiceItems = invoiceItemService.dbGetItems(invoiceId);
             bankAccounts = bankAccountService.dbGetAccounts();
             currentAccount = bankAccountService.dbGetAccount(invoice.BankAccountId);
             if (currentAccount == null) {

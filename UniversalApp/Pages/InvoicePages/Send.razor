@@ -67,6 +67,8 @@
 
     private InvoiceService invoiceService = new InvoiceService();
     private Invoice invoice = new Invoice();
+
+    private InvoiceItemService invoiceItemService = new InvoiceItemService();
     private List<Item> invoiceItems = new List<Item>();
 
     private UserService userService = new UserService();
@@ -102,7 +104,7 @@
             }
 
             // Load Invoice Items
-            invoiceItems = invoiceService.dbGetItems(invoiceId);
+            invoiceItems = invoiceItemService.dbGetItems(invoiceId);
             currentUser = userService.dbGetUser(invoice.UserId);
 
             foreach(Item item in invoiceItems)
