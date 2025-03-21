@@ -8,7 +8,7 @@ namespace UniversalApp.Services
     {
         private DbService dbService = new DbService();
         private InvoiceItemService invoiceItemService = new InvoiceItemService();
-        private ClientService clientService = new ClientService();
+        private ClientService clientService = new ClientService();        
         public InvoiceService() { }
 
         public void dbCreateInvoice(Invoice invoice, List<Item> items)
@@ -89,25 +89,7 @@ namespace UniversalApp.Services
                 {
                     var invoicePreviews = connection.Table<Invoice>()
                         .Where(i => i.UserId == userId)
-                        .Select(i =>
-                        {
-                            Client client = clientService.dbGetSingle(userId, i.ClientId);
-                            string clientName = "";
-                            if (client.isB2B)
-                            {
-                                clientName = client.BusinessName;
-                            }
-                            else
-                            {
-                                clientName = client.FirstName + " " + client.LastName;
-                            }
-                            return new InvoicePreviewDTO(
-                                i.Id,
-                                i.skuTypeId,
-                                clientName,
-                                i.JobName,
-                                i.InvoiceNum);
-                        })
+                        .Select(i => mapToPreviewDTO(userId, i))
                         .ToList();
 
                     return invoicePreviews;
@@ -178,6 +160,53 @@ namespace UniversalApp.Services
             }
             return 0;
         }
-        
+
+        public List<InvoicePreviewDTO> dbSearchBySKU(int userId, int skuId)
+        {
+            using (var connection = dbService.GetConnection())
+            {
+
+                return connection.Table<Invoice>()
+                        .Where(i => i.skuTypeId == skuId)
+                        .Select(i => mapToPreviewDTO(userId, i))
+                        .ToList();
+            }
+        }
+
+        public List<InvoicePreviewDTO> dbSearchByText(int userId, string searchString)
+        {
+            searchString = searchString.ToLower();
+
+            using (var connection = dbService.GetConnection())
+            {
+                return connection.Table<Invoice>()
+                                 .Where(i => i.InvoiceNum.ToLower().Contains(searchString) ||
+                                             i.ClientName.ToLower().Contains(searchString) ||
+                                             i.JobName.ToLower().Contains(searchString) ||
+                                             i.JobDescription.ToLower().Contains(searchString))
+                                 .Select(i => mapToPreviewDTO(userId, i))
+                                 .ToList();
+            }
+        }
+
+        private InvoicePreviewDTO mapToPreviewDTO(int userId, Invoice invoice)
+        {
+            Client client = clientService.dbGetSingle(userId, invoice.ClientId);
+            string clientName = "";
+            if (client.isB2B && client.BusinessName != null)
+            {
+                clientName = client.BusinessName;
+            }
+            else
+            {
+                clientName = client.FirstName + " " + client.LastName;
+            }
+            return new InvoicePreviewDTO(
+                invoice.Id,
+                invoice.skuTypeId,
+                clientName,
+                invoice.JobName,
+                invoice.InvoiceNum);
+        }
     }
 }

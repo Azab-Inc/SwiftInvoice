@@ -4,11 +4,46 @@
 @using UniversalApp.Services;
 @using UniversalApp.Shared.Components;
 
-<h1 class="page-heading">All invoices</h1>
+<div>
+    <h1 class="page-heading">All invoices</h1>
 
-<a href="/newinvoice"><button class="btn-pri mx-auto my-3">New invoice</button></a>
+    <a href="/newinvoice"><button class="btn-pri mx-auto my-3">New invoice</button></a>
+</div>
+<div>
+    <h2 class="text-pri font-bold text-3xl">Search</h2>
+    <div class="flex flex-col md:flex-row md:gap-x-2 gap-y-1">
+        
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">By text</span>                
+                </div>
+                <input @onchange="OnSearchText" type="text" class="input border-pri border-[1px] input-bordered w-full max-w-xs" />
+                
+            </label>
 
-    <table class="mx-auto w-full">
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">By SKU</span>
+                </div>
+            @if (skuOptions.Count > 0)
+            {
+                <select class="select select-bordered border-[1px] p-1 border-pri min-w-20"
+                        @onchange="OnSearchSKU">
+                    @foreach (SKU sku in skuOptions)
+                    {
+                        <option value="@sku.Id">@sku.SKUName</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <h2>No SKUs found, please add one.</h2>
+            }
+
+            </label>        
+    </div>
+</div>
+<table class="mx-auto w-full mt-3">
         <thead>
             <tr>
                 <th>Invoice Number</th>
@@ -23,13 +58,11 @@
                 <tr class="hover">
                     <td>@invoice.InvoiceNum</td>
                     <td>@invoice.ClientName</td>
-                    <td>@invoice.JobName</td>
-                    <td>
-                        <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
-                            <a href="/editinvoice/@invoice.InvoiceId"><button class="btn btn-warn">Edit</button></a>
-                            <a href="/sendinvoice/@invoice.InvoiceId"><button class="btn btn-sec">Send</button></a>
-                        </div>
-                    </td>
+                    <td>@invoice.JobName</td>                    
+                        <td class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                            <a href="/editinvoice/@invoice.InvoiceId"><button class="btn btn-warning">Edit</button></a>
+                            <a href="/sendinvoice/@invoice.InvoiceId"><button class="btn btn-pri">Send</button></a>
+                        </td>                    
                 </tr>
             }
         </tbody>
@@ -40,10 +73,48 @@
     private UserService userService = new UserService();
     private List<InvoicePreviewDTO> invoices = new List<InvoicePreviewDTO>();
     private User currentUser = new User();
+    private SKUService skuService = new SKUService();
+    private List<SKU> skuOptions = new List<SKU>();
+
+    private string txtSearch = "";
+    private int selectedSkuId = 0;
+
 
     protected override void OnInitialized()
     {
+
+
         currentUser = userService.dbLoadUser();
-        invoices = invoiceService.dbGetInvoicePreviews(currentUser.UserId);        
+        LoadAll();
+        skuOptions.Add(new SKU { Id = 0, SKUName = "All", UserId = 0 });
+        skuService.dbGetMany(currentUser.UserId, skuService.dbGetCount(currentUser.UserId), 0).ForEach((SKU newSku) =>
+        {
+            skuOptions.Add(newSku);
+        });
+    }
+
+    private void LoadAll()
+    {
+        invoices = invoiceService.dbGetInvoicePreviews(currentUser.UserId);
+    }
+
+    private void OnSearchText(ChangeEventArgs e)
+    {
+        invoices = invoiceService.dbSearchByText(currentUser.UserId, e.Value.ToString());       
+    }
+
+    private void OnSearchSKU(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out selectedSkuId))
+        {
+            if (selectedSkuId == 0) 
+            {
+                LoadAll();
+            }
+            else
+            {
+                invoices = invoiceService.dbSearchBySKU(currentUser.UserId, selectedSkuId);                
+            }
+        }
     }
 }
