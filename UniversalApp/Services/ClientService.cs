@@ -33,7 +33,14 @@ namespace UniversalApp.Services
                 search = search.ToLower();
                 return connection.Table<Client>()
                     .Where(c => c.UserId == userId)
-                    .Where(c => c.FirstName.ToLower().Contains(search) || c.LastName.ToLower().Contains(search))
+                    .Where(c => c.FirstName.ToLower().Contains(search) || 
+                                c.LastName.ToLower().Contains(search) || 
+                                c.Website.ToLower().Contains(search) || 
+                                c.Phone.ToString().Contains(search) ||
+                                c.Email.ToString().Contains(search) ||
+                                c.BusinessName.ToString().Contains(search) ||
+                                c.BusinessNumber.ToString().Contains(search)
+                                )
                     .Select(c => new ClientPreviewDTO(
                         c.Id,
                         c.FirstName,
