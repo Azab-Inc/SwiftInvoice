@@ -10,11 +10,11 @@
 
 <a href="/clients/create"><button class="btn-pri ml-auto">Add Client</button></a>
 <div class="my-3 flex flex-col sm:flex-row gap-1">
-    <input type="text" @bind="searchTerm" placeholder="Search clients..." class="form-control"  />
+    <input type="text" @bind="searchTerm" placeholder="Search clients..." class="input input-bordered" />
     <a><button @onclick="() => OnSearch()" class="btn-pri ml-auto">Search</button></a>
 </div>
 
-<div class="grid place-content-center place-items-center grid-cols-1 sm:grid-cols-2  gap-3 my-3 mx-auto">
+<div class="grid place-content-center place-items-center grid-cols-1 lg:grid-cols-2  gap-3 my-3 mx-auto">
     
     @if (clients != null && clients.Any())
     {
@@ -26,21 +26,23 @@
                     <p><b>Email:</b> @client.Email</p>
                     <p><b>Phone:</b> @client.Phone</p>
                 </div>
-                <p><b>Invoices:</b> @client.Invoices</p>
 
                 @if (!string.IsNullOrEmpty(client.ProfileImg))
                 {
                     <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(File.ReadAllBytes(client.ProfileImg))}")"
-                         alt="Profile Image" class="w-full max-h-40 object-contain" />
+                         alt="Profile Image" class="w-full h-40 object-contain" />
                 }
                 else
                 {
                     <p>No profile image available.</p>
                 }
 
-                <a href="/clients/edit/@client.Id">
-                    <button class="btn btn-pri">Manage Client</button>
-                </a>
+                <div class="flex flex-col-reverse sm:flex-row gap-3 items-center sm:items-end justify-between mt-3">
+                    <a href="/clients/edit/@client.Id">
+                        <button class="btn btn-pri">Manage Client</button>
+                    </a>
+                    <p><b>Invoices:</b> @client.Invoices</p>
+                </div>
             </CardComponent>
         }
     }
@@ -75,10 +77,5 @@
     private void OnSearch()
     {
         clients = clientService.dbSearch(currentUser.UserId, searchTerm);
-    }
-
-    private int GetNumberOfInvoicesForClient(int clientId)
-    {
-        return 5; // Just a placeholder, adjust according to your actual logic
     }
 }
