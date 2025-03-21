@@ -39,10 +39,7 @@
             </div>
 
             <div class="w-full sm:w-1/2">
-                <div class="flex flex-row gap-x-1 items-center justify-start">
-                    <label class="tooltip" data-tip="Is this invoice for another business?" for="isB2B">Is B2B</label>
-                    <InputCheckbox id="isB2B" class="checkbox w-4 checkbox-[pri]" @bind-Value="currentClient.isB2B" />
-                </div>
+                
                 <div class="form-group">
                     <label for="businessNumber">Business Number</label>
                     <InputText id="businessNumber" class="form-control" @bind-Value="currentClient.BusinessNumber" />
@@ -83,6 +80,10 @@
                         <p>No profile image available.</p>
                     }
                 </div>
+                <div class="flex flex-row gap-x-1 items-center justify-start">
+                    <label class="tooltip" data-tip="Is this invoice for another business?" for="isB2B">Is B2B</label>
+                    <InputCheckbox id="isB2B" class="checkbox w-4 checkbox-[pri]" @bind-Value="currentClient.isB2B" />
+                </div>
             </div>
         </div>
 
@@ -104,14 +105,14 @@
         @if (confirmSave)
         {
             <ToasterComponent Message="Are you sure you want to save changes to this client?" Type="warn" Redirect="false" Location="" Url="" />
-            <button @onclick:preventDefault="true" @onclick="ConfirmSaveChanges" class="btn btn-warn mt-3">Confirm save</button>
+            <button @onclick:preventDefault="true" @onclick="ConfirmSaveChanges" class="btn btn-warning mt-3">Confirm save</button>
         }
 
         @if (!savedChanges && !confirmSave && !deleteClient)
         {
             <div class="flex flex-row mt-3 gap-3">
-                <button @onclick:preventDefault="true" @onclick="StartSaveChangesConfirmation" class="btn btn-warn">Save changes</button>
-                <button @onclick:preventDefault="true" @onclick="StartDeleteClientConfirmation" class="btn btn-danger">Delete Client</button>
+                <button @onclick:preventDefault="true" @onclick="StartSaveChangesConfirmation" class="btn btn-warning">Save changes</button>
+                <button @onclick:preventDefault="true" @onclick="StartDeleteClientConfirmation" class="btn btn-danger">Delete client</button>
             </div>
         }
     </EditForm>
