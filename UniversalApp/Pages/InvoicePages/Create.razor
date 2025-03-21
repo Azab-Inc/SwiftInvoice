@@ -142,10 +142,10 @@
 
 @if (!createdInvoice)
 {
-    <button class="btn-suc text-xl px-4 py-2" @onclick="SaveInvoice">Create Invoice</button>
+    <button class="btn btn-success text-xl px-4 py-2" @onclick="SaveInvoice">Create Invoice</button>
 }
 
-<a href="/showall"><button class="btn-warn mt-3">Back</button></a>
+<a href="/showall"><button class="btn btn-warning mt-3">Back</button></a>
 
 @if (createdInvoice)
 {
@@ -250,6 +250,20 @@
             if (bankAccountService.dbGetAccount(selectedAccount.AccountId) != null)
             {
                 newInvoice.BankAccountId = selectedAccount.AccountId;
+                newInvoice.skuTypeId = selectedSkuId;
+                SKU currentSKU = skuService.dbGetSingle(currentUser.UserId, selectedSkuId);
+                invoiceNumber = skuService.newestNum(currentUser.UserId, currentSKU.Id) + 1;
+
+                newInvoice.skuTypeId = selectedSkuId;
+                if (invoiceNumber < 100)
+                {
+                    currentSKU.SKUName += "0";
+                }
+                if (invoiceNumber < 10)
+                {
+                    currentSKU.SKUName += "0";
+                }
+                newInvoice.InvoiceNum = currentSKU.SKUName + invoiceNumber;
                 invoiceService.dbCreateInvoice(newInvoice, invoiceItems);
                 accountNotSelected = false;
                 createdInvoice = true;                
