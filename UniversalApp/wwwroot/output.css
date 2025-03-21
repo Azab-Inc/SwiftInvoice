@@ -8849,6 +8849,11 @@ a button, button, .btn {
   background-color: rgb(220 53 69 / var(--tw-bg-opacity));
 }
 
+.btn-danger:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
 form label input, form input, form label textarea {
   width: 100%;
   border-width: 2px;
@@ -10226,7 +10231,7 @@ td, th {
 
 .divide-primary > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
-  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-divide-opacity)));
+  border-color: rgb(20 120 170 / var(--tw-divide-opacity));
 }
 
 .divide-primary-content > :not([hidden]) ~ :not([hidden]) {
@@ -10949,7 +10954,7 @@ td, th {
 
 .border-primary {
   --tw-border-opacity: 1;
-  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-primary-content {
@@ -11080,8 +11085,8 @@ td, th {
 
 .border-x-primary {
   --tw-border-opacity: 1;
-  border-left-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
-  border-right-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-left-color: rgb(20 120 170 / var(--tw-border-opacity));
+  border-right-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-x-primary-content {
@@ -11210,8 +11215,8 @@ td, th {
 
 .border-y-primary {
   --tw-border-opacity: 1;
-  border-top-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
-  border-bottom-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-top-color: rgb(20 120 170 / var(--tw-border-opacity));
+  border-bottom-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-y-primary-content {
@@ -11327,7 +11332,7 @@ td, th {
 
 .border-b-primary {
   --tw-border-opacity: 1;
-  border-bottom-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-bottom-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-b-primary-content {
@@ -11435,7 +11440,7 @@ td, th {
 
 .border-e-primary {
   --tw-border-opacity: 1;
-  border-inline-end-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-inline-end-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-e-primary-content {
@@ -11543,7 +11548,7 @@ td, th {
 
 .border-l-primary {
   --tw-border-opacity: 1;
-  border-left-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-left-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-l-primary-content {
@@ -11651,7 +11656,7 @@ td, th {
 
 .border-r-primary {
   --tw-border-opacity: 1;
-  border-right-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-right-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-r-primary-content {
@@ -11759,7 +11764,7 @@ td, th {
 
 .border-s-primary {
   --tw-border-opacity: 1;
-  border-inline-start-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-inline-start-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-s-primary-content {
@@ -11867,7 +11872,7 @@ td, th {
 
 .border-t-primary {
   --tw-border-opacity: 1;
-  border-top-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  border-top-color: rgb(20 120 170 / var(--tw-border-opacity));
 }
 
 .border-t-primary-content {
@@ -11995,12 +12000,17 @@ td, th {
 
 .bg-primary {
   --tw-bg-opacity: 1;
-  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+  background-color: rgb(20 120 170 / var(--tw-bg-opacity));
 }
 
 .bg-primary-content {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-pc,oklch(var(--pc)/var(--tw-bg-opacity)));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .bg-secondary {
@@ -12182,8 +12192,8 @@ td, th {
 }
 
 .from-primary {
-  --tw-gradient-from: var(--fallback-p,oklch(var(--p)/1)) var(--tw-gradient-from-position);
-  --tw-gradient-to: var(--fallback-p,oklch(var(--p)/0)) var(--tw-gradient-to-position);
+  --tw-gradient-from: #1478aa var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(20 120 170 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -12301,8 +12311,8 @@ td, th {
 }
 
 .via-primary {
-  --tw-gradient-to: var(--fallback-p,oklch(var(--p)/0))  var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--fallback-p,oklch(var(--p)/1)) var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-to: rgb(20 120 170 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #1478aa var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-primary-content {
@@ -12398,7 +12408,7 @@ td, th {
 }
 
 .to-primary {
-  --tw-gradient-to: var(--fallback-p,oklch(var(--p)/1)) var(--tw-gradient-to-position);
+  --tw-gradient-to: #1478aa var(--tw-gradient-to-position);
 }
 
 .to-primary-content {
@@ -12583,7 +12593,7 @@ td, th {
 }
 
 .stroke-primary {
-  stroke: var(--fallback-p,oklch(var(--p)/1));
+  stroke: #1478aa;
 }
 
 .stroke-primary-content {
@@ -13085,7 +13095,7 @@ td, th {
 
 .text-primary {
   --tw-text-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
+  color: rgb(20 120 170 / var(--tw-text-opacity));
 }
 
 .text-primary-content {
@@ -13316,12 +13326,12 @@ td, th {
 
 .placeholder-primary::-moz-placeholder {
   --tw-placeholder-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-placeholder-opacity)));
+  color: rgb(20 120 170 / var(--tw-placeholder-opacity));
 }
 
 .placeholder-primary::placeholder {
   --tw-placeholder-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-placeholder-opacity)));
+  color: rgb(20 120 170 / var(--tw-placeholder-opacity));
 }
 
 .placeholder-primary-content::-moz-placeholder {
@@ -13662,7 +13672,7 @@ td, th {
 }
 
 .outline-primary {
-  outline-color: var(--fallback-p,oklch(var(--p)/1));
+  outline-color: #1478aa;
 }
 
 .outline-primary-content {
@@ -13807,7 +13817,7 @@ td, th {
 
 .ring-primary {
   --tw-ring-opacity: 1;
-  --tw-ring-color: var(--fallback-p,oklch(var(--p)/var(--tw-ring-opacity)));
+  --tw-ring-color: rgb(20 120 170 / var(--tw-ring-opacity));
 }
 
 .ring-primary-content {
@@ -13922,7 +13932,7 @@ td, th {
 }
 
 .ring-offset-primary {
-  --tw-ring-offset-color: var(--fallback-p,oklch(var(--p)/1));
+  --tw-ring-offset-color: #1478aa;
 }
 
 .ring-offset-primary-content {
