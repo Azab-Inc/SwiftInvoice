@@ -37,7 +37,7 @@
     }
 
     .btn-danger {
-        @apply bg-danger;
+        @apply bg-danger hover:bg-red-700;
     }
 
     form label input, form input, form label textarea {
