@@ -139,7 +139,7 @@
             @if (!savedChanges && !confirmSave && !deleteInvoice)
             {
                 <div class="flex flex-row mt-3 gap-3">
-                    <button @onclick:preventDefault="true" @onclick="StartSaveChangesConfirmation" class="btn btn-warn">Save changes</button>
+                    <button @onclick:preventDefault="true" @onclick="StartSaveChangesConfirmation" class="btn btn-warning">Save changes</button>
                     <button @onclick:preventDefault="true" @onclick="StartDeleteInvoiceConfirmation" class="btn btn-danger">Delete invoice</button>
                 </div>
             }
